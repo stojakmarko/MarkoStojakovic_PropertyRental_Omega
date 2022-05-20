@@ -29,7 +29,7 @@ public class Property {
     private boolean freeParking;
     private boolean wifi;
 
-    @OneToMany(mappedBy = "property")
+    @OneToMany(mappedBy = "property",fetch = FetchType.LAZY)
     private List<Reservation> reservations;
 
 

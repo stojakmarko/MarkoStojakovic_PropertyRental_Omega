@@ -26,11 +26,14 @@ public class User {
     @ManyToOne
     private UserRole userRole;
 
-    @OneToMany(mappedBy = "owner")
+    @OneToMany(mappedBy = "owner",fetch = FetchType.LAZY)
     private List<Property> ownProperties;
 
-    @OneToMany(mappedBy = "property")
+    @OneToMany(mappedBy = "property",fetch = FetchType.LAZY)
     private List<Reservation> reservedProperties;
+
+    @OneToMany(mappedBy = "property",fetch = FetchType.LAZY)
+    private List<Submission> submissionProperties;
 
 
 
