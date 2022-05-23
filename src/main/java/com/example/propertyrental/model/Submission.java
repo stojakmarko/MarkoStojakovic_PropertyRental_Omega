@@ -1,13 +1,18 @@
 package com.example.propertyrental.model;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.id.UUIDGenerator;
+
 import javax.persistence.*;
+import java.util.UUID;
 
 @Entity
 public class Submission {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    @GeneratedValue(generator = UUIDGenerator.GENERATOR_NAME )
+    @Type(type = "uuid-char")
+    private UUID id;
 
     private String comment;
     private boolean approvment;
