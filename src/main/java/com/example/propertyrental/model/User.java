@@ -2,9 +2,12 @@ package com.example.propertyrental.model;
 
 
 import lombok.*;
+import org.hibernate.annotations.Type;
+import org.hibernate.id.UUIDGenerator;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.UUID;
 
 @Entity(name = "users")
 @Data
@@ -14,9 +17,9 @@ import java.util.List;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-
+    @GeneratedValue(generator =UUIDGenerator.GENERATOR_NAME )
+    @Type(type = "uuid-char")
+    private UUID id;
     private String firstName;
     private String lastName;
     private String userName;
