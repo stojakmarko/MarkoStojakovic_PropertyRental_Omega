@@ -13,18 +13,20 @@ import java.util.Date;
 public class JwtTokenUtil {
 
 
-    @Value("${jwt.secret}")
+    @Value("${property-rental.security.jwt.secret}")
     private String secret;
+    @Value("${property-rental.security.jwt.time}")
+    private String time;
 
     public String genarateToken(User user){
-        return doGanarateToken(user.getUserName());
+        return doGenarateToken(user.getUserName());
     }
 
-    private String doGanarateToken(String userName) {
+    private String doGenarateToken(String userName) {
         return Jwts.builder()
                 .setClaims(Jwts.claims().setSubject(userName))
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + 60*60*1000))
+                .setExpiration(new Date(System.currentTimeMillis() + Integer.parseInt(time)*1000))
                 .signWith(SignatureAlgorithm.HS256,secret)
                 .compact();
     }

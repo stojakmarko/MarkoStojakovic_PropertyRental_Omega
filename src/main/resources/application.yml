@@ -11,5 +11,8 @@ spring:
   h2:
     console:
       enabled: true
-jwt:
-  secret: somesecretkey
+property-rental:
+    security:
+       jwt:
+         secret: somesecretkey
+         time: 3600
