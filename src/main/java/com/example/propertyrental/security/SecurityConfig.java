@@ -3,6 +3,7 @@ package com.example.propertyrental.security;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,7 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();
 
-        http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
+        http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
+                                 .antMatchers("/registration").permitAll();
         http.headers().frameOptions().disable();
 
 
