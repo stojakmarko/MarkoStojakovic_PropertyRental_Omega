@@ -17,10 +17,10 @@ public class UserService {
     private UserRepository userRepository;
     private UserRoleRepository userRoleRepository;
     private RegistrationUserMapper registrationUserMapper;
-    
+
 
     public UserDto createClient(RegistrationRequestDto registrationRequest) {
-        UserRole userRole = userRoleRepository.findUserRoleByRole("CLIENT");
+        UserRole userRole = userRoleRepository.findByRole("CLIENT");
         User user = registrationUserMapper.toUser(registrationRequest);
         user.setUserRole(userRole);
         User created = userRepository.save(user);
