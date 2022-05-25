@@ -35,9 +35,9 @@ public class AppCommandRunner implements CommandLineRunner {
                 .userRole(userRole1)
                 .userName("John")
                 .password(passwordEncoder.encode("12345678"))
-                .lastName("Jhonson")
-                .firstName("Jhon")
-                .email("jhon@gamail.com")
+                .lastName("Johnson")
+                .firstName("John")
+                .email("johnn@gamail.com")
                 .build();
         userRepository.save(user1);
 
@@ -64,7 +64,7 @@ public class AppCommandRunner implements CommandLineRunner {
                     .builder()
                     .availability(true)
                     .freeParking(true)
-                    .location("dammystreet"+i)
+                    .location("dummystreet"+i)
                     .numOfBedrooms(2)
                     .numOfSleepPlace(4)
                     .name("property"+i)
