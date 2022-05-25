@@ -14,7 +14,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/registration")
+@RequestMapping("/api/v1/registration")
 @AllArgsConstructor
 public class RegistrationController {
 
