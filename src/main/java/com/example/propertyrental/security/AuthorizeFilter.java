@@ -26,31 +26,27 @@ public class AuthorizeFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        if(request.getServletPath().equals("/sign")){
-            filterChain.doFilter(request,response);
-        }else{
-            try {
-                String token = request.getHeader("Authorization");
-                if(token != null && token.startsWith("Bearer ")){
-                    token = token.substring(7);
-                    String username = jwt.getUserNameFromToken(token);
-                    if(username != null && SecurityContextHolder.getContext().getAuthentication()==null){
+
+        try {
+            String token = request.getHeader("Authorization");
+            if (token != null && token.startsWith("Bearer ")) {
+                token = token.substring(7);
+                String username = jwt.getUserNameFromToken(token);
+                if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+                    if (jwt.validateToken(token)) {
                         UserDetails user = userService.loadUserByUsername(username);
-                        if(jwt.validateToken(token,user)){
-                            UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
-                            authenticate.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                            SecurityContextHolder.getContext().setAuthentication(authenticate);
-                        }
+                        UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+                        authenticate.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                        SecurityContextHolder.getContext().setAuthentication(authenticate);
                     }
                 }
-                filterChain.doFilter(request,response);
-
-            }catch (Exception e){
-                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.sendError(HttpServletResponse.SC_UNAUTHORIZED,e.getMessage());
-
             }
+            filterChain.doFilter(request, response);
+
+        } catch (Exception e) {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, e.getMessage());
         }
-        
     }
+
 }
