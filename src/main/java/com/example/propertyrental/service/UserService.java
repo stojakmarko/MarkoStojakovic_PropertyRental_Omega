@@ -3,7 +3,6 @@ package com.example.propertyrental.service;
 import com.example.propertyrental.dto.RegistrationRequestDto;
 import com.example.propertyrental.dto.UserDto;
 import com.example.propertyrental.mapper.RegistrationUserMapper;
-import com.example.propertyrental.mapper.UserMapper;
 import com.example.propertyrental.model.User;
 import com.example.propertyrental.model.UserRole;
 import com.example.propertyrental.repository.UserRepository;
@@ -18,14 +17,14 @@ public class UserService {
     private UserRepository userRepository;
     private UserRoleRepository userRoleRepository;
     private RegistrationUserMapper registrationUserMapper;
-    private UserMapper userMapper;
+    
 
     public UserDto createClient(RegistrationRequestDto registrationRequest) {
         UserRole userRole = userRoleRepository.findUserRoleByRole("CLIENT");
         User user = registrationUserMapper.toUser(registrationRequest);
         user.setUserRole(userRole);
         User created = userRepository.save(user);
-        return userMapper.toUserDTO(created);
+        return registrationUserMapper.toUserDTO(created);
     }
 
 }
