@@ -9,9 +9,11 @@ import com.example.propertyrental.repository.UserRepository;
 import com.example.propertyrental.repository.UserRoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
+@Transactional
 public class UserService {
 
     private UserRepository userRepository;
