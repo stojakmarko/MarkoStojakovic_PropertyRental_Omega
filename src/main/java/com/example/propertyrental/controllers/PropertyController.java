@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.UUID;
 
 
@@ -45,7 +46,7 @@ public class PropertyController {
 
 
     @PostMapping
-    public ResponseEntity<?> createProperty(@RequestBody PropertyRequestDto propertyRequestDto, @AuthenticationPrincipal(expression = "username") String username) {
+    public ResponseEntity<?> createProperty(@Valid @RequestBody PropertyRequestDto propertyRequestDto, @AuthenticationPrincipal(expression = "username") String username) {
         PropertyResponseDto responseDto = propertyService.createProperty(propertyRequestDto, username);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
