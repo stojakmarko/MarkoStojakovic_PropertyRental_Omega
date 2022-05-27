@@ -2,6 +2,7 @@ package com.example.propertyrental.controllers;
 
 import com.example.propertyrental.dto.PropertyRequestDto;
 import com.example.propertyrental.dto.PropertyResponseDto;
+import com.example.propertyrental.dto.ReservationDto;
 import com.example.propertyrental.service.PropertyService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -48,6 +49,13 @@ public class PropertyController {
         PropertyResponseDto responseDto = propertyService.createProperty(propertyRequestDto, username);
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
+
+    @PostMapping("/reservation")
+    public ResponseEntity<?> makeReservation(@RequestBody ReservationDto reservationDto, @AuthenticationPrincipal(expression = "username") String username) {
+        PropertyResponseDto responseDto = propertyService.createReservation(reservationDto, username);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
+    }
+
 
     @PutMapping("/{id}")
     public ResponseEntity<PropertyResponseDto> updateProperty(@RequestBody PropertyRequestDto propertyRequestDto, @PathVariable("id") UUID id,

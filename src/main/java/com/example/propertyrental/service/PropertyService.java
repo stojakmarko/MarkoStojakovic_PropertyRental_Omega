@@ -2,13 +2,12 @@ package com.example.propertyrental.service;
 
 import com.example.propertyrental.dto.PropertyRequestDto;
 import com.example.propertyrental.dto.PropertyResponseDto;
+import com.example.propertyrental.dto.ReservationDto;
 import com.example.propertyrental.exception.NotFoundPropertyExcpetion;
 import com.example.propertyrental.mapper.PropertyMapper;
-import com.example.propertyrental.model.Property;
-import com.example.propertyrental.model.Status;
-import com.example.propertyrental.model.Submission;
-import com.example.propertyrental.model.User;
+import com.example.propertyrental.model.*;
 import com.example.propertyrental.repository.PropertyRepositoriy;
+import com.example.propertyrental.repository.ReservationRepository;
 import com.example.propertyrental.repository.SubmissionRepository;
 import com.example.propertyrental.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -29,6 +28,7 @@ public class PropertyService {
     private PropertyMapper propertyMapper;
     private UserRepository userRepository;
     private SubmissionRepository submissionRepository;
+    private ReservationRepository reservationRepository;
 
 
     public Page<PropertyResponseDto> getAllProperties(int page, int size) {
@@ -68,9 +68,23 @@ public class PropertyService {
 
     }
 
-
     public void deleteProperty(UUID id, String username) {
         Property property = propertyRepositoriy.findByIdAndOwner_UserName(id, username).orElseThrow(NotFoundPropertyExcpetion::new);
         propertyRepositoriy.delete(property);
     }
+
+    public PropertyResponseDto createReservation(ReservationDto reservationDto, String username) {
+        Property property = propertyRepositoriy.findById(reservationDto.id()).orElseThrow(NotFoundPropertyExcpetion::new);
+        User user = userRepository.findUserByUserName(username);
+        Reservation reservation = new Reservation();
+        reservation.setProperty(property);
+        reservation.setUser(user);
+        reservation.setReservationFrom(reservationDto.fromDate());
+        reservation.setReservationTo(reservationDto.toDate());
+        reservationRepository.save(reservation);
+        return propertyMapper.toPropertyResponseDto(property);
+
+    }
+
+
 }
