@@ -54,4 +54,18 @@ public class PropertyService {
         submissionRepository.save(submission);
         return propertyMapper.toPropertyResponseDto(created);
     }
+
+    public PropertyResponseDto updateProperty(PropertyRequestDto propertyRequestDto, UUID id, String username) {
+        Property property = propertyRepositoriy.findByIdAndOwner_UserName(id, username).orElseThrow(NotFoundPropertyExcpetion::new);
+        propertyMapper.updateProperty(property, propertyRequestDto);
+        propertyRepositoriy.save(property);
+        return propertyMapper.toPropertyResponseDto(property);
+
+    }
+
+
+    public void deleteProperty(UUID id, String username) {
+        Property property = propertyRepositoriy.findByIdAndOwner_UserName(id, username).orElseThrow(NotFoundPropertyExcpetion::new);
+        propertyRepositoriy.delete(property);
+    }
 }
