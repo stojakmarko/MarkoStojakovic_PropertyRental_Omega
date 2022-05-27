@@ -20,7 +20,6 @@ public class PropertyController {
     private PropertyService propertyService;
 
 
-
     @GetMapping
     public ResponseEntity<Page<PropertyResponseDto>> getAllProperties(@RequestParam(name = "page", defaultValue = "0") int page,
                                                                       @RequestParam(name = "size", defaultValue = "10") int size) {
@@ -29,7 +28,7 @@ public class PropertyController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PropertyResponseDto> getPropertyById(@PathVariable("id")UUID id){
+    public ResponseEntity<PropertyResponseDto> getPropertyById(@PathVariable("id") UUID id) {
         PropertyResponseDto propertyResponseDto = propertyService.getProperty(id);
         return ResponseEntity.ok(propertyResponseDto);
     }
