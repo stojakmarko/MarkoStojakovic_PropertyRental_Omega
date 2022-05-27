@@ -41,4 +41,17 @@ public class PropertyMapper {
                 .owner(owner)
                 .build();
     }
+
+    public void updateProperty(Property property,PropertyRequestDto propertyRequestDto){
+        property.setName(propertyRequestDto.getName());
+        property.setLocation(propertyRequestDto.getLocation());
+        property.setAvailability(propertyRequestDto.isAvailability());
+        property.setFreeParking(propertyRequestDto.isFreeParking());
+        property.setNumOfBedrooms(propertyRequestDto.getNumOfBedrooms());
+        property.setNumOfSleepPlace(propertyRequestDto.getNumOfSleepPlace());
+        property.setPool(propertyRequestDto.isPool());
+        property.setPrice(propertyRequestDto.getPrice());
+        property.setWifi(propertyRequestDto.isWifi());
+
+    }
 }
