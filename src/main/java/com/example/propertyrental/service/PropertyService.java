@@ -41,7 +41,7 @@ public class PropertyService {
     }
 
 
-    public void createProperty(PropertyRequestDto propertyRequestDto, String username) {
+    public PropertyResponseDto createProperty(PropertyRequestDto propertyRequestDto, String username) {
         User user = userRepository.findUserByUserName(username);
         Property property = propertyMapper.toProperty(propertyRequestDto, user);
         Submission submission = new Submission();
@@ -49,7 +49,8 @@ public class PropertyService {
         submission.setUser(user);
         submission.setStatus(Status.PENDING);
         submission.setCreated(LocalDate.now());
-        propertyRepositoriy.save(property);
+        Property created = propertyRepositoriy.save(property);
         submissionRepository.save(submission);
+        return propertyMapper.toPropertyResponseDto(created);
     }
 }

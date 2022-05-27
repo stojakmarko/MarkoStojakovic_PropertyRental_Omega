@@ -5,6 +5,7 @@ import com.example.propertyrental.dto.PropertyResponseDto;
 import com.example.propertyrental.service.PropertyService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -35,7 +36,10 @@ public class PropertyController {
 
 
     @PostMapping
-    public void createProperty(@RequestBody PropertyRequestDto propertyRequestDto, @AuthenticationPrincipal(expression = "username") String username) {
-        propertyService.createProperty(propertyRequestDto, username);
+    public ResponseEntity<?> createProperty(@RequestBody PropertyRequestDto propertyRequestDto, @AuthenticationPrincipal(expression = "username") String username) {
+        PropertyResponseDto responseDto = propertyService.createProperty(propertyRequestDto, username);
+        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
+
+
 }
