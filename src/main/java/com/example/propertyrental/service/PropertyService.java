@@ -2,6 +2,7 @@ package com.example.propertyrental.service;
 
 import com.example.propertyrental.dto.PropertyRequestDto;
 import com.example.propertyrental.dto.PropertyResponseDto;
+import com.example.propertyrental.exception.NotFoundPropertyExcpetion;
 import com.example.propertyrental.mapper.PropertyMapper;
 import com.example.propertyrental.model.Property;
 import com.example.propertyrental.model.Status;
@@ -36,7 +37,7 @@ public class PropertyService {
     }
 
     public PropertyResponseDto getProperty(UUID id) {
-        Property property = propertyRepositoriy.getById(id);
+        Property property = propertyRepositoriy.findById(id).orElseThrow(NotFoundPropertyExcpetion::new);
         return propertyMapper.toPropertyResponseDto(property);
     }
 
