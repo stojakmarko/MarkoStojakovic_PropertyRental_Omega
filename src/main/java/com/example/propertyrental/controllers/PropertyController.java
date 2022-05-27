@@ -28,6 +28,14 @@ public class PropertyController {
         return ResponseEntity.ok(pagePropertyResponse);
     }
 
+    @GetMapping("/search")
+    public ResponseEntity<Page<PropertyResponseDto>> getAllPropertiesSearch(@RequestParam(name = "page", defaultValue = "0") int page,
+                                                                            @RequestParam(name = "size", defaultValue = "10") int size
+            , @RequestParam(name = "search", defaultValue = "") String search) {
+        Page<PropertyResponseDto> pagePropertyResponse = propertyService.getAllPropertiesSearch(page, size, search);
+        return ResponseEntity.ok(pagePropertyResponse);
+    }
+
     @GetMapping("/{id}")
     public ResponseEntity<PropertyResponseDto> getPropertyById(@PathVariable("id") UUID id) {
         PropertyResponseDto propertyResponseDto = propertyService.getProperty(id);

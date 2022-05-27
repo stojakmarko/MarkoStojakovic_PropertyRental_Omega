@@ -36,6 +36,11 @@ public class PropertyService {
         return pageProperties.map(propertyMapper::toPropertyResponseDto);
     }
 
+    public Page<PropertyResponseDto> getAllPropertiesSearch(int page, int size, String search) {
+        Page<Property> pageProperties = propertyRepositoriy.findAllSearch(PageRequest.of(page, size), search);
+        return pageProperties.map(propertyMapper::toPropertyResponseDto);
+    }
+
     public PropertyResponseDto getProperty(UUID id) {
         Property property = propertyRepositoriy.findById(id).orElseThrow(NotFoundPropertyExcpetion::new);
         return propertyMapper.toPropertyResponseDto(property);
