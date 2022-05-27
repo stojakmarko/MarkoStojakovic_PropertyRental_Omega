@@ -41,5 +41,19 @@ public class PropertyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<PropertyResponseDto> updateProperty(@RequestBody PropertyRequestDto propertyRequestDto, @PathVariable("id") UUID id,
+                                                              @AuthenticationPrincipal(expression = "username") String username) {
+        PropertyResponseDto responseDto = propertyService.updateProperty(propertyRequestDto, id, username);
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteProperty(@PathVariable("id") UUID id,
+                               @AuthenticationPrincipal(expression = "username") String username) {
+        propertyService.deleteProperty(id, username);
+    }
+
 
 }
