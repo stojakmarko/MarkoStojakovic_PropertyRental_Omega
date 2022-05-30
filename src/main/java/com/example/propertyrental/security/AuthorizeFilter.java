@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -26,21 +27,29 @@ public class AuthorizeFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-
-        String token = request.getHeader("Authorization");
-        if (token != null && token.startsWith("Bearer ")) {
-            token = token.substring(7);
-            if (jwt.validateToken(token) && SecurityContextHolder.getContext().getAuthentication() == null) {
-                String username = jwt.getUserNameFromToken(token);
-                UserDetails user = userService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                authenticate.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authenticate);
-
-            }
+        String token = getTokenFromHeader(request.getHeader("Authorization"));
+        if (jwt.validateToken(token)) {
+            String username = jwt.getUserNameFromToken(token);
+            UserDetails user = userService.loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken authenticate = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            authenticate.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authenticate);
         }
+
         filterChain.doFilter(request, response);
-            
+    }
+    
+    private String getTokenFromHeader(String authorizationHeader) {
+        if (StringUtils.hasText(authorizationHeader)) {
+            return null;
+        }
+
+        String jwtToken = null;
+        if (authorizationHeader.startsWith("Bearer ")) {
+            jwtToken = authorizationHeader.substring(7);
+        }
+
+        return jwtToken;
     }
 
 }
