@@ -13,6 +13,7 @@ import java.util.Collection;
 
 
 @AllArgsConstructor
+@Getter
 public class CustemUserDetails implements UserDetails {
 
     private User user;

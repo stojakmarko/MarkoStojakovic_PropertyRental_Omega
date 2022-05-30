@@ -11,6 +11,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @EnableWebSecurity
 @Configuration
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private CustemDetailUserService custemDetailUserService;
+    private AuthorizeFilter authorizeFilter;
 
 
     @Override
@@ -28,12 +30,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.cors()
-                .and().
-                csrf().disable();
+                .and()
+                .csrf().disable();
+
+        http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
+        http.headers().frameOptions().disable();
+
 
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and();
+        http.addFilterBefore(authorizeFilter, UsernamePasswordAuthenticationFilter.class);
 
 
     }
