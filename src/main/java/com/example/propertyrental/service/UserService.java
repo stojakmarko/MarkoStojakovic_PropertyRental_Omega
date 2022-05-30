@@ -29,4 +29,12 @@ public class UserService {
         return registrationUserMapper.toUserDTO(created);
     }
 
+    public User findUserByUsername(String username) {
+        return userRepository.findUserByUserName(username);
+    }
+
+    public boolean existUserByEmail(String email) {
+        return userRepository.existsByEmail(email);
+    }
+
 }
