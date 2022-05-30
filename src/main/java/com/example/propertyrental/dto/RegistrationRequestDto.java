@@ -25,12 +25,16 @@ public class RegistrationRequestDto {
 
     @Size(min = 3, max = 50, message = "Firstname should have minimum 3 and maximum 50 characters ")
     private String firstname;
+
     @Size(min = 3, max = 50, message = "Lastname should have minimum 3 and maximum 50 characters ")
     private String lastname;
+
     @UniqueUsername
     private String username;
+
     private String password;
     private String verifyPassword;
+
     @Email(message = "Email should be farmatted")
     @UniqueEmail
     private String email;
