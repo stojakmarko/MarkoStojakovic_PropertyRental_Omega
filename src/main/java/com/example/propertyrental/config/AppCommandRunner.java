@@ -37,7 +37,7 @@ public class AppCommandRunner implements CommandLineRunner {
                 .password(passwordEncoder.encode("12345678"))
                 .lastName("Johnson")
                 .firstName("John")
-                .email("johnn@gamail.com")
+                .email("johnn@gmail.com")
                 .build();
         userRepository.save(user1);
 
@@ -54,29 +54,28 @@ public class AppCommandRunner implements CommandLineRunner {
                 .password(passwordEncoder.encode("mark123"))
                 .lastName("markovic")
                 .firstName("Mark")
-                .email("mark@gamail.com")
+                .email("mark@gmail.com")
                 .build();
 
         userRepository.save(user2);
 
-        for(int i = 0;i <20;i++){
+        for (int i = 0; i < 20; i++) {
             Property property = Property
                     .builder()
                     .availability(true)
                     .freeParking(true)
-                    .location("dummystreet"+i)
+                    .location("dummystreet" + i)
                     .numOfBedrooms(2)
                     .numOfSleepPlace(4)
-                    .name("property"+i)
+                    .name("property" + i)
                     .owner(user2)
-                    .price(100+i)
+                    .price(100 + i)
                     .wifi(true)
                     .pool(false)
                     .build();
             propertyRepositoriy.save(property);
         }
 
-
-
     }
+
 }
