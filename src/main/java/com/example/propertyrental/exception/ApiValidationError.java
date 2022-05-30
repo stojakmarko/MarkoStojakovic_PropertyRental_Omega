@@ -17,4 +17,5 @@ public class ApiValidationError {
         this.object = object;
         this.message = message;
     }
+    
 }
