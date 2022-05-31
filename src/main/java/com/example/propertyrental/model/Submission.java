@@ -1,12 +1,17 @@
 package com.example.propertyrental.model;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.Type;
 import org.hibernate.id.UUIDGenerator;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.util.UUID;
 
 @Entity
+@Getter
+@Setter
 public class Submission {
 
     @Id
@@ -15,7 +20,9 @@ public class Submission {
     private UUID id;
 
     private String comment;
-    private boolean approvment;
+    @Enumerated(EnumType.STRING)
+    private Status status;
+    private LocalDate created;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
