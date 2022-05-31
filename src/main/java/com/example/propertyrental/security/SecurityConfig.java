@@ -33,14 +33,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable();
 
-        http.authorizeRequests().antMatchers("/h2-console/**").permitAll();
+        http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
+                .antMatchers("/api/v1/registration").permitAll()
+                .antMatchers("/api/v1/sign").permitAll();
         http.headers().frameOptions().disable();
 
 
         http.sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and();
-        http.addFilterBefore(authorizeFilter, UsernamePasswordAuthenticationFilter.class);
+                .and()
+                .addFilterBefore(authorizeFilter, UsernamePasswordAuthenticationFilter.class);
 
 
     }

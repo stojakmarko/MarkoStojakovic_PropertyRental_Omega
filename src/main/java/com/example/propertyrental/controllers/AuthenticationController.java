@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/sign")
+@RequestMapping("/api/v1/sign")
 @AllArgsConstructor
 public class AuthenticationController {
 
@@ -28,18 +28,17 @@ public class AuthenticationController {
 
 
     @PostMapping
-    public ResponseEntity<?> authentication(@RequestBody AuthenticateRequest authenticateRequest){
+    public ResponseEntity<?> authentication(@RequestBody AuthenticateRequest authenticateRequest) {
 
         try {
-
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticateRequest.username(),authenticateRequest.password()));
-            CustemUserDetails userDetails =(CustemUserDetails)userService.loadUserByUsername(authenticateRequest.username());
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticateRequest.username(), authenticateRequest.password()));
+            CustemUserDetails userDetails = (CustemUserDetails) userService.loadUserByUsername(authenticateRequest.username());
             String token = jwt.genarateToken(userDetails.getUser());
             HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization",token);
+            headers.set("Authorization", token);
             return new ResponseEntity<String>(headers, HttpStatus.OK);
 
-        }catch (Exception e){
+        } catch (Exception e) {
             AuthenticationResponse authenticationResponse = new AuthenticationResponse("Bad credentials");
             return new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.BAD_REQUEST);
 
