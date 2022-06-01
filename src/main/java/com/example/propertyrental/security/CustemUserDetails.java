@@ -3,7 +3,6 @@ package com.example.propertyrental.security;
 import com.example.propertyrental.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -23,7 +22,7 @@ public class CustemUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+user.getUserRole().getRole()));
+        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getUserRole().getRole()));
         return authorities;
     }
 
@@ -56,4 +55,5 @@ public class CustemUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }
