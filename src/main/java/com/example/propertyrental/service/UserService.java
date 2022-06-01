@@ -30,7 +30,7 @@ public class UserService {
     }
 
     public User findUserByUsername(String username) {
-        return userRepository.findUserByUserName(username);
+        return userRepository.findUserByUserName(username).get();
     }
 
     public boolean existUserByEmail(String email) {

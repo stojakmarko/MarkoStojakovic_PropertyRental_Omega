@@ -2,7 +2,6 @@ package com.example.propertyrental.controllers;
 
 
 import com.example.propertyrental.dto.AuthenticateRequest;
-import com.example.propertyrental.dto.AuthenticationResponse;
 import com.example.propertyrental.security.CustemDetailUserService;
 import com.example.propertyrental.security.CustemUserDetails;
 import com.example.propertyrental.security.JwtTokenUtil;
@@ -30,19 +29,13 @@ public class AuthenticationController {
     @PostMapping
     public ResponseEntity<?> authentication(@RequestBody AuthenticateRequest authenticateRequest) {
 
-        try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticateRequest.username(), authenticateRequest.password()));
-            CustemUserDetails userDetails = (CustemUserDetails) userService.loadUserByUsername(authenticateRequest.username());
-            String token = jwt.genarateToken(userDetails.getUser());
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("Authorization", token);
-            return new ResponseEntity<String>(headers, HttpStatus.OK);
-
-        } catch (Exception e) {
-            AuthenticationResponse authenticationResponse = new AuthenticationResponse("Bad credentials");
-            return new ResponseEntity<AuthenticationResponse>(authenticationResponse, HttpStatus.BAD_REQUEST);
-
-        }
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticateRequest.username(), authenticateRequest.password()));
+        CustemUserDetails userDetails = (CustemUserDetails) userService.loadUserByUsername(authenticateRequest.username());
+        String token = jwt.genarateToken(userDetails.getUser());
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Authorization", token);
+        return new ResponseEntity<String>(headers, HttpStatus.OK);
 
     }
+
 }

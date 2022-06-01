@@ -48,7 +48,7 @@ public class PropertyService {
 
 
     public PropertyResponseDto createProperty(PropertyRequestDto propertyRequestDto, String username) {
-        User user = userRepository.findUserByUserName(username);
+        User user = userRepository.findUserByUserName(username).get();
         Property property = propertyMapper.toProperty(propertyRequestDto, user);
         Submission submission = new Submission();
         submission.setProperty(property);
@@ -75,7 +75,7 @@ public class PropertyService {
 
     public PropertyResponseDto createReservation(ReservationDto reservationDto, String username) {
         Property property = propertyRepositoriy.findById(reservationDto.id()).orElseThrow(NotFoundPropertyExcpetion::new);
-        User user = userRepository.findUserByUserName(username);
+        User user = userRepository.findUserByUserName(username).get();
         Reservation reservation = new Reservation();
         reservation.setProperty(property);
         reservation.setUser(user);
