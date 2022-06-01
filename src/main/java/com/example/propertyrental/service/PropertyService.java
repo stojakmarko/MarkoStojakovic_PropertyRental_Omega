@@ -5,18 +5,19 @@ import com.example.propertyrental.dto.PropertyResponseDto;
 import com.example.propertyrental.dto.ReservationDto;
 import com.example.propertyrental.exception.NotFoundPropertyExcpetion;
 import com.example.propertyrental.mapper.PropertyMapper;
-import com.example.propertyrental.model.*;
+import com.example.propertyrental.model.Property;
+import com.example.propertyrental.model.Reservation;
+import com.example.propertyrental.model.Submission;
+import com.example.propertyrental.model.User;
 import com.example.propertyrental.repository.PropertyRepositoriy;
 import com.example.propertyrental.repository.ReservationRepository;
 import com.example.propertyrental.repository.SubmissionRepository;
-import com.example.propertyrental.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
 import java.util.UUID;
 
 @Service
@@ -26,7 +27,7 @@ public class PropertyService {
 
     private PropertyRepositoriy propertyRepositoriy;
     private PropertyMapper propertyMapper;
-    private UserRepository userRepository;
+    private UserService userService;
     private SubmissionRepository submissionRepository;
     private ReservationRepository reservationRepository;
 
@@ -48,13 +49,9 @@ public class PropertyService {
 
 
     public PropertyResponseDto createProperty(PropertyRequestDto propertyRequestDto, String username) {
-        User user = userRepository.findUserByUserName(username).get();
+        User user = userService.findUserByUsername(username);
         Property property = propertyMapper.toProperty(propertyRequestDto, user);
-        Submission submission = new Submission();
-        submission.setProperty(property);
-        submission.setUser(user);
-        submission.setStatus(Status.PENDING);
-        submission.setCreated(LocalDate.now());
+        Submission submission = propertyMapper.toSubmission(property, user);
         Property created = propertyRepositoriy.save(property);
         submissionRepository.save(submission);
         return propertyMapper.toPropertyResponseDto(created);
@@ -75,16 +72,11 @@ public class PropertyService {
 
     public PropertyResponseDto createReservation(ReservationDto reservationDto, String username) {
         Property property = propertyRepositoriy.findById(reservationDto.id()).orElseThrow(NotFoundPropertyExcpetion::new);
-        User user = userRepository.findUserByUserName(username).get();
-        Reservation reservation = new Reservation();
-        reservation.setProperty(property);
-        reservation.setUser(user);
-        reservation.setReservationFrom(reservationDto.fromDate());
-        reservation.setReservationTo(reservationDto.toDate());
+        User user = userService.findUserByUsername(username);
+        Reservation reservation = propertyMapper.toReservation(property, user, reservationDto);
         reservationRepository.save(reservation);
         return propertyMapper.toPropertyResponseDto(property);
 
     }
-
 
 }

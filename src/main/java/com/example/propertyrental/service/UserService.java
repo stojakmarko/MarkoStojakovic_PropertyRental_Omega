@@ -8,6 +8,7 @@ import com.example.propertyrental.model.UserRole;
 import com.example.propertyrental.repository.UserRepository;
 import com.example.propertyrental.repository.UserRoleRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,7 +31,11 @@ public class UserService {
     }
 
     public User findUserByUsername(String username) {
-        return userRepository.findUserByUserName(username).get();
+        return userRepository.findByUserName(username).orElseThrow(() -> new UsernameNotFoundException("Not found user"));
+    }
+
+    public boolean existUserByUserName(String username) {
+        return userRepository.existsByUserName(username);
     }
 
     public boolean existUserByEmail(String email) {
