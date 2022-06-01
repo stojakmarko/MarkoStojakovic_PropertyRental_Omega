@@ -1,7 +1,6 @@
 package com.example.propertyrental.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.id.UUIDGenerator;
 
@@ -12,6 +11,9 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Submission {
 
     @Id

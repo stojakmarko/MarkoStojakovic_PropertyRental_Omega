@@ -2,11 +2,11 @@ package com.example.propertyrental.mapper;
 
 import com.example.propertyrental.dto.PropertyRequestDto;
 import com.example.propertyrental.dto.PropertyResponseDto;
-import com.example.propertyrental.model.Property;
-import com.example.propertyrental.model.User;
+import com.example.propertyrental.dto.ReservationDto;
+import com.example.propertyrental.model.*;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
+import java.time.LocalDate;
 
 @Component
 public class PropertyMapper {
@@ -42,7 +42,7 @@ public class PropertyMapper {
                 .build();
     }
 
-    public void updateProperty(Property property,PropertyRequestDto propertyRequestDto){
+    public void updateProperty(Property property, PropertyRequestDto propertyRequestDto) {
         property.setName(propertyRequestDto.getName());
         property.setLocation(propertyRequestDto.getLocation());
         property.setAvailability(propertyRequestDto.isAvailability());
@@ -54,4 +54,23 @@ public class PropertyMapper {
         property.setWifi(propertyRequestDto.isWifi());
 
     }
+
+    public Submission toSubmission(Property property, User user) {
+        return Submission.builder()
+                .property(property)
+                .user(user)
+                .status(Status.PENDING)
+                .created(LocalDate.now())
+                .build();
+    }
+
+    public Reservation toReservation(Property property, User user, ReservationDto reservationDto) {
+        return Reservation.builder()
+                .property(property)
+                .reservationTo(reservationDto.toDate())
+                .reservationFrom(reservationDto.fromDate())
+                .user(user)
+                .build();
+    }
+
 }
