@@ -3,6 +3,7 @@ package com.example.propertyrental.security;
 
 import com.example.propertyrental.model.User;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
@@ -43,14 +44,14 @@ public class JwtTokenUtil {
                 .getBody();
     }
 
-    private Boolean isTokenExpierd(String token) {
-        Date expiration = getAllClaims(token).getExpiration();
-        return expiration.before(new Date());
-    }
 
     public Boolean validateToken(String token) {
-        return !isTokenExpierd(token);
+        try {
+            getAllClaims(token);
+            return true;
+        } catch (Exception e) {
+            throw new JwtException(e.getMessage());
+        }
     }
-
 
 }
