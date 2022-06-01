@@ -1,6 +1,7 @@
 package com.example.propertyrental.security;
 
 
+import io.jsonwebtoken.JwtException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -39,7 +40,7 @@ public class AuthorizeFilter extends OncePerRequestFilter {
 
             }
             filterChain.doFilter(request, response);
-        } catch (Exception e) {
+        } catch (JwtException e) {
             handlerExceptionResolver.resolveException(request, response, null, e);
         }
 

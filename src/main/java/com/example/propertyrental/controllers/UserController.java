@@ -1,10 +1,12 @@
 package com.example.propertyrental.controllers;
 
-
 import com.example.propertyrental.dto.AuthenticateRequest;
+import com.example.propertyrental.dto.RegistrationRequestDto;
+import com.example.propertyrental.dto.UserDto;
 import com.example.propertyrental.security.CustemDetailUserService;
 import com.example.propertyrental.security.CustemUserDetails;
 import com.example.propertyrental.security.JwtTokenUtil;
+import com.example.propertyrental.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,26 +18,36 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
-@RequestMapping("/api/v1/sign")
+@RequestMapping("/api/v1")
 @AllArgsConstructor
-public class AuthenticationController {
+public class UserController {
+
 
     private JwtTokenUtil jwt;
     private AuthenticationManager authenticationManager;
-    private CustemDetailUserService userService;
+    private CustemDetailUserService detailUserServiceService;
+    private UserService userService;
 
 
-    @PostMapping
+    @PostMapping("/sign")
     public ResponseEntity<?> authentication(@RequestBody AuthenticateRequest authenticateRequest) {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticateRequest.username(), authenticateRequest.password()));
-        CustemUserDetails userDetails = (CustemUserDetails) userService.loadUserByUsername(authenticateRequest.username());
+        CustemUserDetails userDetails = (CustemUserDetails) detailUserServiceService.loadUserByUsername(authenticateRequest.username());
         String token = jwt.genarateToken(userDetails.getUser());
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Authorization", token);
+        headers.setBearerAuth(token);
         return new ResponseEntity<String>(headers, HttpStatus.OK);
 
+    }
+
+    @PostMapping("/registration")
+    public ResponseEntity<UserDto> userRegistration(@Valid @RequestBody RegistrationRequestDto registrationRequest) {
+        UserDto userDto = userService.createClient(registrationRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
 }

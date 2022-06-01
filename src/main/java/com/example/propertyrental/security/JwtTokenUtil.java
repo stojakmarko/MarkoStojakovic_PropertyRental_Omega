@@ -49,7 +49,7 @@ public class JwtTokenUtil {
         try {
             getAllClaims(token);
             return true;
-        } catch (Exception e) {
+        } catch (JwtException e) {
             throw new JwtException(e.getMessage());
         }
     }
