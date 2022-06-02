@@ -11,6 +11,6 @@ import lombok.*;
 public class ForgotPasswordDto {
 
     @UniqueUsername
-    String username;
+    private String username;
 
 }

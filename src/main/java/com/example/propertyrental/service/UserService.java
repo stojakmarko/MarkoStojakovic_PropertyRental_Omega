@@ -83,7 +83,7 @@ public class UserService {
     }
 
     private void changePasswordEmailToUser(User user, String link, String token) {
-        String url = link + "" + token;
+        String url = link + token;
         String text = "Click on link to change password \n\n" + url;
         String email = user.getEmail();
         String subject = "Change password";
