@@ -1,8 +1,8 @@
 package com.example.propertyrental.service;
 
-import com.example.propertyrental.dto.RegistrationRequestDto;
+import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.dto.UserDto;
-import com.example.propertyrental.mapper.RegistrationUserMapper;
+import com.example.propertyrental.mapper.UserMapper;
 import com.example.propertyrental.model.User;
 import com.example.propertyrental.model.UserRole;
 import com.example.propertyrental.repository.UserRepository;
@@ -19,15 +19,15 @@ public class UserService {
 
     private UserRepository userRepository;
     private UserRoleRepository userRoleRepository;
-    private RegistrationUserMapper registrationUserMapper;
+    private UserMapper userMapper;
 
 
-    public UserDto createClient(RegistrationRequestDto registrationRequest) {
+    public UserDto createClient(UserRegistrationRequestDto registrationRequest) {
         UserRole userRole = userRoleRepository.findByRole("CLIENT");
-        User user = registrationUserMapper.toUser(registrationRequest);
+        User user = userMapper.toUser(registrationRequest);
         user.setUserRole(userRole);
         User created = userRepository.save(user);
-        return registrationUserMapper.toUserDTO(created);
+        return userMapper.toUserDTO(created);
     }
 
     public User findUserByUsername(String username) {

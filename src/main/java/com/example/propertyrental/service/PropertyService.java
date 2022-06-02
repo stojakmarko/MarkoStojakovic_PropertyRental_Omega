@@ -5,6 +5,8 @@ import com.example.propertyrental.dto.PropertyResponseDto;
 import com.example.propertyrental.dto.ReservationDto;
 import com.example.propertyrental.exception.NotFoundPropertyExcpetion;
 import com.example.propertyrental.mapper.PropertyMapper;
+import com.example.propertyrental.mapper.ReservationMapper;
+import com.example.propertyrental.mapper.SubmissionMapper;
 import com.example.propertyrental.model.Property;
 import com.example.propertyrental.model.Reservation;
 import com.example.propertyrental.model.Submission;
@@ -27,6 +29,8 @@ public class PropertyService {
 
     private PropertyRepositoriy propertyRepositoriy;
     private PropertyMapper propertyMapper;
+    private SubmissionMapper submissionMapper;
+    private ReservationMapper reservationMapper;
     private UserService userService;
     private SubmissionRepository submissionRepository;
     private ReservationRepository reservationRepository;
@@ -51,7 +55,7 @@ public class PropertyService {
     public PropertyResponseDto createProperty(PropertyRequestDto propertyRequestDto, String username) {
         User user = userService.findUserByUsername(username);
         Property property = propertyMapper.toProperty(propertyRequestDto, user);
-        Submission submission = propertyMapper.toSubmission(property, user);
+        Submission submission = submissionMapper.toSubmission(property, user);
         Property created = propertyRepositoriy.save(property);
         submissionRepository.save(submission);
         return propertyMapper.toPropertyResponseDto(created);
@@ -59,9 +63,9 @@ public class PropertyService {
 
     public PropertyResponseDto updateProperty(PropertyRequestDto propertyRequestDto, UUID id, String username) {
         Property property = propertyRepositoriy.findByIdAndOwner_UserName(id, username).orElseThrow(NotFoundPropertyExcpetion::new);
-        propertyMapper.updateProperty(property, propertyRequestDto);
-        propertyRepositoriy.save(property);
-        return propertyMapper.toPropertyResponseDto(property);
+        Property updated = propertyMapper.updateProperty(property, propertyRequestDto);
+        propertyRepositoriy.save(updated);
+        return propertyMapper.toPropertyResponseDto(updated);
 
     }
 
@@ -73,7 +77,7 @@ public class PropertyService {
     public PropertyResponseDto createReservation(ReservationDto reservationDto, String username) {
         Property property = propertyRepositoriy.findById(reservationDto.id()).orElseThrow(NotFoundPropertyExcpetion::new);
         User user = userService.findUserByUsername(username);
-        Reservation reservation = propertyMapper.toReservation(property, user, reservationDto);
+        Reservation reservation = reservationMapper.toReservation(property, user, reservationDto);
         reservationRepository.save(reservation);
         return propertyMapper.toPropertyResponseDto(property);
 

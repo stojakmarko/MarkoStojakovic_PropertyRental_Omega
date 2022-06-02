@@ -1,7 +1,7 @@
 package com.example.propertyrental.controllers;
 
 import com.example.propertyrental.dto.AuthenticateRequest;
-import com.example.propertyrental.dto.RegistrationRequestDto;
+import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.dto.UserDto;
 import com.example.propertyrental.security.CustemDetailUserService;
 import com.example.propertyrental.security.CustemUserDetails;
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public ResponseEntity<UserDto> userRegistration(@Valid @RequestBody RegistrationRequestDto registrationRequest) {
+    public ResponseEntity<UserDto> userRegistration(@Valid @RequestBody UserRegistrationRequestDto registrationRequest) {
         UserDto userDto = userService.createClient(registrationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
