@@ -1,7 +1,10 @@
 package com.example.propertyrental.model;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Type;
 import org.hibernate.id.UUIDGenerator;
 
@@ -17,7 +20,7 @@ import java.util.UUID;
 public class User {
 
     @Id
-    @GeneratedValue(generator =UUIDGenerator.GENERATOR_NAME )
+    @GeneratedValue(generator = UUIDGenerator.GENERATOR_NAME)
     @Type(type = "uuid-char")
     private UUID id;
     private String firstName;
@@ -26,21 +29,17 @@ public class User {
     private String password;
     private String email;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
-    @OneToMany(mappedBy = "owner",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
     private List<Property> ownProperties;
 
-    @OneToMany(mappedBy = "property",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "property", fetch = FetchType.LAZY)
     private List<Reservation> reservedProperties;
 
-    @OneToMany(mappedBy = "property",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "property", fetch = FetchType.LAZY)
     private List<Submission> submissionProperties;
-
-
-
-
 
 
 }

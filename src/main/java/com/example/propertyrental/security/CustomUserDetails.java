@@ -22,7 +22,7 @@ public class CustemUserDetails implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getUserRole().getRole()));
+        authorities.add(new SimpleGrantedAuthority(user.getUserRole().);
         return authorities;
     }
 
