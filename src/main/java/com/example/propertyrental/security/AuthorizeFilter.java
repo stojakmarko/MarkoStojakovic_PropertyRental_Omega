@@ -23,7 +23,7 @@ import java.io.IOException;
 public class AuthorizeFilter extends OncePerRequestFilter {
 
     private JwtTokenUtil jwt;
-    private CustemDetailUserService userService;
+    private CustomDetailUserService userService;
     private HandlerExceptionResolver handlerExceptionResolver;
 
 

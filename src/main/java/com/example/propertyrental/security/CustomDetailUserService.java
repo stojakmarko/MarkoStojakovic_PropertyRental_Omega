@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class CustemDetailUserService implements UserDetailsService {
+public class CustomDetailUserService implements UserDetailsService {
 
     private UserRepository userRepository;
 
@@ -19,8 +19,8 @@ public class CustemDetailUserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         User user = userRepository.findByUserName(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        CustemUserDetails custemUserDetails = new CustemUserDetails(user);
-        return custemUserDetails;
+        CustomUserDetails customUserDetails = new CustomUserDetails(user);
+        return customUserDetails;
     }
 
 }
