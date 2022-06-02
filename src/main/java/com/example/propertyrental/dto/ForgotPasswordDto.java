@@ -1,4 +1,16 @@
 package com.example.propertyrental.dto;
 
-public record ForgotPasswordDto(String username) {
+import com.example.propertyrental.validation.UniqueUsername;
+import lombok.*;
+
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class ForgotPasswordDto {
+
+    @UniqueUsername
+    String username;
+
 }
