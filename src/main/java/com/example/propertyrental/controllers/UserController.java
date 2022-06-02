@@ -1,9 +1,6 @@
 package com.example.propertyrental.controllers;
 
-import com.example.propertyrental.dto.AuthenticateRequest;
-import com.example.propertyrental.dto.ForgotPasswordDto;
-import com.example.propertyrental.dto.RegistrationRequestDto;
-import com.example.propertyrental.dto.UserDto;
+import com.example.propertyrental.dto.*;
 import com.example.propertyrental.security.CustemDetailUserService;
 import com.example.propertyrental.security.CustemUserDetails;
 import com.example.propertyrental.security.JwtTokenUtil;
@@ -14,10 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -53,9 +47,15 @@ public class UserController {
     }
 
     @PostMapping("/forgotPassword")
-    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto, HttpServletRequest request) {
-        userService.forgotPassword(forgotPasswordDto.username(),request);
-        return ResponseEntity.ok().body("");
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordDto forgotPasswordDto, HttpServletRequest request) {
+        MessageResponseDto responseDto = userService.forgotPassword(forgotPasswordDto.getUsername(), request);
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordDto changePasswordDto, @RequestParam("token") String token) {
+        MessageResponseDto responseDto = userService.changePassword(changePasswordDto, token);
+        return ResponseEntity.ok(responseDto);
     }
 
 }
