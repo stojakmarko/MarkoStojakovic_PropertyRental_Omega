@@ -1,10 +1,10 @@
 package com.example.propertyrental.controllers;
 
 import com.example.propertyrental.dto.AuthenticateRequest;
-import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.dto.UserDto;
-import com.example.propertyrental.security.CustemDetailUserService;
-import com.example.propertyrental.security.CustemUserDetails;
+import com.example.propertyrental.dto.UserRegistrationRequestDto;
+import com.example.propertyrental.security.CustomDetailUserService;
+import com.example.propertyrental.security.CustomUserDetails;
 import com.example.propertyrental.security.JwtTokenUtil;
 import com.example.propertyrental.service.UserService;
 import lombok.AllArgsConstructor;
@@ -21,22 +21,22 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1")
+@RequestMapping("/api/v1/user")
 @AllArgsConstructor
 public class UserController {
 
 
     private JwtTokenUtil jwt;
     private AuthenticationManager authenticationManager;
-    private CustemDetailUserService detailUserServiceService;
+    private CustomDetailUserService detailUserServiceService;
     private UserService userService;
 
 
-    @PostMapping("/sign")
+    @PostMapping("/auth")
     public ResponseEntity<?> authentication(@RequestBody AuthenticateRequest authenticateRequest) {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticateRequest.username(), authenticateRequest.password()));
-        CustemUserDetails userDetails = (CustemUserDetails) detailUserServiceService.loadUserByUsername(authenticateRequest.username());
+        CustomUserDetails userDetails = (CustomUserDetails) detailUserServiceService.loadUserByUsername(authenticateRequest.username());
         String token = jwt.genarateToken(userDetails.getUser());
         HttpHeaders headers = new HttpHeaders();
         headers.setBearerAuth(token);
