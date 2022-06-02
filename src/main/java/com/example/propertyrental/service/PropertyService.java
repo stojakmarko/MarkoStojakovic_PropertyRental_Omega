@@ -77,10 +77,14 @@ public class PropertyService {
     public PropertyResponseDto createReservation(ReservationDto reservationDto, String username) {
         Property property = propertyRepositoriy.findById(reservationDto.id()).orElseThrow(NotFoundPropertyExcpetion::new);
         User user = userService.findUserByUsername(username);
-        Reservation reservation = reservationMapper.toReservation(property, user, reservationDto);
+        Reservation reservation = reservationMapper.toReservation(property, user, reservationDto.fromDate(), reservationDto.toDate());
         reservationRepository.save(reservation);
         return propertyMapper.toPropertyResponseDto(property);
 
+    }
+
+    public void addProperty(Property property) {
+        propertyRepositoriy.save(property);
     }
 
 }
