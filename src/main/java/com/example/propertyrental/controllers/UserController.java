@@ -1,6 +1,7 @@
 package com.example.propertyrental.controllers;
 
 import com.example.propertyrental.dto.AuthenticateRequest;
+import com.example.propertyrental.dto.ForgotPasswordDto;
 import com.example.propertyrental.dto.RegistrationRequestDto;
 import com.example.propertyrental.dto.UserDto;
 import com.example.propertyrental.security.CustemDetailUserService;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -48,6 +50,12 @@ public class UserController {
     public ResponseEntity<UserDto> userRegistration(@Valid @RequestBody RegistrationRequestDto registrationRequest) {
         UserDto userDto = userService.createClient(registrationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
+    }
+
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<?> forgotPassword(@RequestBody ForgotPasswordDto forgotPasswordDto, HttpServletRequest request) {
+        userService.forgotPassword(forgotPasswordDto.username(),request);
+        return ResponseEntity.ok().body("");
     }
 
 }
