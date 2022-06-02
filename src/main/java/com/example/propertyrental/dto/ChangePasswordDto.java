@@ -6,7 +6,7 @@ import lombok.Data;
 @Data
 @FieldsValueMatch.List({
         @FieldsValueMatch(
-                field = "password",
+                field = "newPassword",
                 fieldMatch = "verifyPassword",
                 message = "Passwords do not match!"
         )
