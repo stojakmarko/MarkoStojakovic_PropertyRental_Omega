@@ -6,8 +6,6 @@ import com.example.propertyrental.model.Property;
 import com.example.propertyrental.model.User;
 import org.springframework.stereotype.Component;
 
-import java.util.UUID;
-
 @Component
 public class PropertyMapper {
 
@@ -42,16 +40,21 @@ public class PropertyMapper {
                 .build();
     }
 
-    public void updateProperty(Property property,PropertyRequestDto propertyRequestDto){
-        property.setName(propertyRequestDto.getName());
-        property.setLocation(propertyRequestDto.getLocation());
-        property.setAvailability(propertyRequestDto.isAvailability());
-        property.setFreeParking(propertyRequestDto.isFreeParking());
-        property.setNumOfBedrooms(propertyRequestDto.getNumOfBedrooms());
-        property.setNumOfSleepPlace(propertyRequestDto.getNumOfSleepPlace());
-        property.setPool(propertyRequestDto.isPool());
-        property.setPrice(propertyRequestDto.getPrice());
-        property.setWifi(propertyRequestDto.isWifi());
+    public Property updateProperty(Property property, PropertyRequestDto propertyRequestDto) {
+        return Property.builder()
+                .id(property.getId())
+                .name(propertyRequestDto.getName())
+                .location(propertyRequestDto.getLocation())
+                .availability(propertyRequestDto.isAvailability())
+                .freeParking(propertyRequestDto.isFreeParking())
+                .numOfBedrooms(propertyRequestDto.getNumOfBedrooms())
+                .numOfSleepPlace(property.getNumOfSleepPlace())
+                .pool(propertyRequestDto.isPool())
+                .price(propertyRequestDto.getPrice())
+                .wifi(propertyRequestDto.isWifi())
+                .build();
+
 
     }
+
 }

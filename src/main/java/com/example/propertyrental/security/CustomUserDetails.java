@@ -3,7 +3,6 @@ package com.example.propertyrental.security;
 import com.example.propertyrental.model.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +13,7 @@ import java.util.Collection;
 
 @AllArgsConstructor
 @Getter
-public class CustemUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private User user;
 
@@ -22,8 +21,8 @@ public class CustemUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_"+user.getUserRole().getRole()));
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getUserRole().toString()));
         return authorities;
     }
 
@@ -56,4 +55,5 @@ public class CustemUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

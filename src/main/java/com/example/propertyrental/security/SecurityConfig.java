@@ -18,13 +18,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @AllArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private CustemDetailUserService custemDetailUserService;
+    private CustomDetailUserService customDetailUserService;
     private AuthorizeFilter authorizeFilter;
 
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(custemDetailUserService);
+        auth.userDetailsService(customDetailUserService);
     }
 
     @Override
@@ -34,8 +34,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable();
 
         http.authorizeRequests().antMatchers("/h2-console/**").permitAll()
-                .antMatchers("/api/v1/registration").permitAll()
-                .antMatchers("/api/v1/sign").permitAll();
+                .antMatchers("/api/v1/user/registration").permitAll()
+                .antMatchers("/api/v1/user/auth").permitAll();
         http.headers().frameOptions().disable();
 
 

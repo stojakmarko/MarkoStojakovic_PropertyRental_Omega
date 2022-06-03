@@ -1,7 +1,6 @@
 package com.example.propertyrental.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Type;
 import org.hibernate.id.UUIDGenerator;
 
@@ -12,10 +11,13 @@ import java.util.UUID;
 @Entity
 @Getter
 @Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class Submission {
 
     @Id
-    @GeneratedValue(generator = UUIDGenerator.GENERATOR_NAME )
+    @GeneratedValue(generator = UUIDGenerator.GENERATOR_NAME)
     @Type(type = "uuid-char")
     private UUID id;
 
@@ -32,4 +34,5 @@ public class Submission {
     @ManyToOne
     @JoinColumn(name = "property_id")
     private Property property;
+
 }

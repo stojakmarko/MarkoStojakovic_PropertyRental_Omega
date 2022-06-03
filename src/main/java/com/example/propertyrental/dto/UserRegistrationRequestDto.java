@@ -20,7 +20,7 @@ import javax.validation.constraints.Size;
                 message = "Passwords do not match!"
         )
 })
-public class RegistrationRequestDto {
+public class UserRegistrationRequestDto {
 
 
     @Size(min = 3, max = 50, message = "Firstname should have minimum 3 and maximum 50 characters ")
@@ -38,4 +38,5 @@ public class RegistrationRequestDto {
     @Email(message = "Email should be farmatted")
     @UniqueEmail
     private String email;
+
 }
