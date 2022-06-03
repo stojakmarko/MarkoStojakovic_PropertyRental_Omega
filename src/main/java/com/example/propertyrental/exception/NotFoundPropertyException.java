@@ -1,12 +1,12 @@
 package com.example.propertyrental.exception;
 
-public class NotFoundPropertyExcpetion extends RuntimeException{
+public class NotFoundPropertyException extends RuntimeException {
 
-    public NotFoundPropertyExcpetion() {
+    public NotFoundPropertyException() {
         super();
     }
 
-    public NotFoundPropertyExcpetion(String message) {
+    public NotFoundPropertyException(String message) {
         super(message);
     }
 
@@ -14,4 +14,5 @@ public class NotFoundPropertyExcpetion extends RuntimeException{
     public String getMessage() {
         return super.getMessage();
     }
+
 }

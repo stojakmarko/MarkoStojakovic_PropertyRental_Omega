@@ -1,14 +1,12 @@
 package com.example.propertyrental.service;
 
-import com.example.propertyrental.dto.ChangePasswordDto;
-import com.example.propertyrental.dto.MessageResponseDto;
-import com.example.propertyrental.dto.RegistrationRequestDto;
+
 import com.example.propertyrental.dto.UserDto;
-import com.example.propertyrental.mapper.RegistrationUserMapper;
+import com.example.propertyrental.dto.UserRegistrationRequestDto;
+import com.example.propertyrental.mapper.UserMapper;
 import com.example.propertyrental.model.User;
 import com.example.propertyrental.model.UserRole;
 import com.example.propertyrental.repository.UserRepository;
-import com.example.propertyrental.repository.UserRoleRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,19 +23,17 @@ import java.util.UUID;
 public class UserService {
 
     private UserRepository userRepository;
-    private UserRoleRepository userRoleRepository;
-    private RegistrationUserMapper registrationUserMapper;
+    private UserMapper userMapper;
 
     private EmailService emailService;
     private PasswordEncoder passwordEncoder;
 
 
-    public UserDto createClient(RegistrationRequestDto registrationRequest) {
-        UserRole userRole = userRoleRepository.findByRole("CLIENT");
-        User user = registrationUserMapper.toUser(registrationRequest);
-        user.setUserRole(userRole);
+    public UserDto createClient(UserRegistrationRequestDto registrationRequest) {
+        User user = userMapper.toUser(registrationRequest);
+        user.setUserRole(UserRole.ROLE_CLIENT);
         User created = userRepository.save(user);
-        return registrationUserMapper.toUserDTO(created);
+        return userMapper.toUserDTO(created);
     }
 
     public MessageResponseDto forgotPassword(String username, HttpServletRequest request) {
@@ -50,7 +46,11 @@ public class UserService {
     }
 
     public User findUserByUsername(String username) {
-        return userRepository.findByUserName(username).orElseThrow(() -> new UsernameNotFoundException("Not found user"));
+        return userRepository.findByUserName(username).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public void addUser(User user) {
+        userRepository.save(user);
     }
 
     public boolean existUserByUserName(String username) {

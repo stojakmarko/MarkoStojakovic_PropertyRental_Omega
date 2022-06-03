@@ -19,7 +19,7 @@ import java.util.UUID;
 public class Property {
 
     @Id
-    @GeneratedValue(generator = UUIDGenerator.GENERATOR_NAME )
+    @GeneratedValue(generator = UUIDGenerator.GENERATOR_NAME)
     @Type(type = "uuid-char")
     private UUID id;
 
@@ -33,11 +33,12 @@ public class Property {
     private boolean freeParking;
     private boolean wifi;
 
-    @OneToMany(mappedBy = "property",fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "property", fetch = FetchType.LAZY)
     private List<Reservation> reservations;
 
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private User owner;
+
 }

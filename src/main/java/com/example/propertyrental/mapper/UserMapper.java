@@ -1,7 +1,7 @@
 package com.example.propertyrental.mapper;
 
-import com.example.propertyrental.dto.RegistrationRequestDto;
 import com.example.propertyrental.dto.UserDto;
+import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,11 +9,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 @AllArgsConstructor
-public class RegistrationUserMapper {
+public class UserMapper {
 
     private PasswordEncoder passwordEncoder;
 
-    public User toUser(RegistrationRequestDto registrationRequest) {
+    public User toUser(UserRegistrationRequestDto registrationRequest) {
         return User
                 .builder()
                 .firstName(registrationRequest.getFirstname())

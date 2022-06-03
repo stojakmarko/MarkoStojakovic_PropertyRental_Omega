@@ -30,7 +30,7 @@ public class User {
     private String email;
     private String passwordResetToken;
 
-    @ManyToOne
+    @Enumerated(EnumType.STRING)
     private UserRole userRole;
 
     @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)

@@ -13,7 +13,7 @@ import java.util.Collection;
 
 @AllArgsConstructor
 @Getter
-public class CustemUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails {
 
     private User user;
 
@@ -21,8 +21,8 @@ public class CustemUserDetails implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        Collection<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
-        authorities.add(new SimpleGrantedAuthority("ROLE_" + user.getUserRole().getRole()));
+        Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
+        authorities.add(new SimpleGrantedAuthority(user.getUserRole().toString()));
         return authorities;
     }
 

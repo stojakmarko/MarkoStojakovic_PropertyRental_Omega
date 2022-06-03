@@ -24,4 +24,5 @@ public class PropertyResponseDto {
     private boolean pool;
     private boolean freeParking;
     private boolean wifi;
+
 }
