@@ -1,6 +1,7 @@
 package com.example.propertyrental.controllers;
 
-import com.example.propertyrental.dto.AuthenticateRequest;
+import com.example.propertyrental.dto.AuthenticationRequestDto;
+import com.example.propertyrental.dto.AuthenticationResponseDto;
 import com.example.propertyrental.dto.UserDto;
 import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.security.CustomDetailUserService;
@@ -8,7 +9,6 @@ import com.example.propertyrental.security.CustomUserDetails;
 import com.example.propertyrental.security.JwtTokenUtil;
 import com.example.propertyrental.service.UserService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,14 +33,15 @@ public class UserController {
 
 
     @PostMapping("/auth")
-    public ResponseEntity<?> authentication(@RequestBody AuthenticateRequest authenticateRequest) {
+    public ResponseEntity<?> authentication(@RequestBody AuthenticationRequestDto authenticationRequestDto) {
 
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticateRequest.username(), authenticateRequest.password()));
-        CustomUserDetails userDetails = (CustomUserDetails) detailUserServiceService.loadUserByUsername(authenticateRequest.username());
+        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDto.username(), authenticationRequestDto.password()));
+        CustomUserDetails userDetails = (CustomUserDetails) detailUserServiceService.loadUserByUsername(authenticationRequestDto.username());
         String token = jwt.genarateToken(userDetails.getUser());
-        HttpHeaders headers = new HttpHeaders();
-        headers.setBearerAuth(token);
-        return new ResponseEntity<String>(headers, HttpStatus.OK);
+        AuthenticationResponseDto responseDto = AuthenticationResponseDto.builder()
+                .accessToken(token)
+                .build();
+        return new ResponseEntity<AuthenticationResponseDto>(responseDto, HttpStatus.OK);
 
     }
 
