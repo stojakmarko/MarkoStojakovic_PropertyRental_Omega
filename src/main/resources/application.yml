@@ -11,8 +11,20 @@ spring:
   h2:
     console:
       enabled: true
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: testtspring
+    password: 
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
 property-rental:
-    security:
-       jwt:
-         secret: somesecretkey
-         time: 3600
+  security:
+    jwt:
+      secret: somesecretkey
+      time: 3600

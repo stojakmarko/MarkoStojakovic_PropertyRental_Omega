@@ -1,5 +1,6 @@
 package com.example.propertyrental.controllers;
 
+
 import com.example.propertyrental.dto.AuthenticationRequestDto;
 import com.example.propertyrental.dto.AuthenticationResponseDto;
 import com.example.propertyrental.dto.UserDto;
@@ -13,11 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
@@ -49,6 +48,18 @@ public class UserController {
     public ResponseEntity<UserDto> userRegistration(@Valid @RequestBody UserRegistrationRequestDto registrationRequest) {
         UserDto userDto = userService.createClient(registrationRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
+    }
+
+    @PostMapping("/forgotPassword")
+    public ResponseEntity<?> forgotPassword(@Valid @RequestBody ForgotPasswordDto forgotPasswordDto, HttpServletRequest request) {
+        MessageResponseDto responseDto = userService.forgotPassword(forgotPasswordDto.getUsername(), request);
+        return ResponseEntity.ok().body(responseDto);
+    }
+
+    @PostMapping("/changePassword")
+    public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordDto changePasswordDto, @RequestParam("token") String token) {
+        MessageResponseDto responseDto = userService.changePassword(changePasswordDto, token);
+        return ResponseEntity.ok(responseDto);
     }
 
 }

@@ -28,6 +28,7 @@ public class User {
     private String userName;
     private String password;
     private String email;
+    private String passwordResetToken;
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
