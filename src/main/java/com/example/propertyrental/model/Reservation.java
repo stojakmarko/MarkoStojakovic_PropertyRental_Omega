@@ -20,7 +20,7 @@ import java.util.UUID;
 public class Reservation {
 
     @Id
-    @GeneratedValue(generator = UUIDGenerator.GENERATOR_NAME )
+    @GeneratedValue(generator = UUIDGenerator.GENERATOR_NAME)
     @Type(type = "uuid-char")
     private UUID id;
 
@@ -36,12 +36,6 @@ public class Reservation {
 
     private LocalDate reservationFrom;
     private LocalDate reservationTo;
-
-
-
-
-
-
 
 
 }

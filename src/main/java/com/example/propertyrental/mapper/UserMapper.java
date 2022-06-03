@@ -1,7 +1,7 @@
 package com.example.propertyrental.mapper;
 
-import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.dto.UserDto;
+import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -32,9 +32,9 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
         return buildResponseEntity(apiError);
     }
 
-    @ExceptionHandler(value = {NotFoundPropertyExcpetion.class})
+    @ExceptionHandler(value = {NotFoundPropertyException.class})
     protected ResponseEntity<Object> handleEntityNotFound(
-            NotFoundPropertyExcpetion ex) {
+            NotFoundPropertyException ex) {
         ApiError apiError = new ApiError(NOT_FOUND);
         apiError.setMessage("Not found property");
         apiError.setDebugMessage(ex.getMessage());

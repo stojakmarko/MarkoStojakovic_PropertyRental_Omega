@@ -17,7 +17,7 @@ import java.util.UUID;
 public class Submission {
 
     @Id
-    @GeneratedValue(generator = UUIDGenerator.GENERATOR_NAME )
+    @GeneratedValue(generator = UUIDGenerator.GENERATOR_NAME)
     @Type(type = "uuid-char")
     private UUID id;
 
@@ -34,4 +34,5 @@ public class Submission {
     @ManyToOne
     @JoinColumn(name = "property_id")
     private Property property;
+
 }

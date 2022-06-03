@@ -38,4 +38,5 @@ public class UserRegistrationRequestDto {
     @Email(message = "Email should be farmatted")
     @UniqueEmail
     private String email;
+
 }
