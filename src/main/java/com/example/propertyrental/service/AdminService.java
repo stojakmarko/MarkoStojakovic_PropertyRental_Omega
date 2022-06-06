@@ -1,10 +1,14 @@
 package com.example.propertyrental.service;
 
+import com.example.propertyrental.dto.SubmissionDto;
 import com.example.propertyrental.dto.UserDto;
 import com.example.propertyrental.dto.UserRegistrationRequestDto;
+import com.example.propertyrental.mapper.SubmissionMapper;
 import com.example.propertyrental.mapper.UserMapper;
+import com.example.propertyrental.model.Submission;
 import com.example.propertyrental.model.User;
 import com.example.propertyrental.model.UserRole;
+import com.example.propertyrental.repository.SubmissionRepository;
 import com.example.propertyrental.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,6 +21,8 @@ public class AdminService {
 
 
     private final UserRepository userRepository;
+    private final SubmissionRepository submissionRepository;
+    private final SubmissionMapper submissionMapper;
     private final UserMapper userMapper;
 
     public Page<UserDto> getAllUsers(int page, int size) {
@@ -29,6 +35,11 @@ public class AdminService {
         user.setUserRole(UserRole.ROLE_ADMIN);
         User created = userRepository.save(user);
         return userMapper.toUserDTO(created);
+    }
+
+    public Page<SubmissionDto> getAllSubmissions(int page, int size) {
+        Page<Submission> submissionPage = submissionRepository.findAll(PageRequest.of(page, size));
+        return submissionPage.map(submissionMapper::toSubmissionDto);
     }
 
 }

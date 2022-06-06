@@ -29,4 +29,10 @@ public class AdminController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
 
+    @GetMapping("/properties/submissions")
+    public ResponseEntity<?> getAllSubmissions(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(adminService.getAllSubmissions(page, size));
+    }
+
+
 }
