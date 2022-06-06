@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
@@ -22,7 +24,7 @@ public class AdminController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<?> createUserAdmin(@RequestBody UserRegistrationRequestDto requestDto) {
+    public ResponseEntity<?> createUserAdmin(@Valid @RequestBody UserRegistrationRequestDto requestDto) {
         UserDto userDto = adminService.createUserAdmin(requestDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
     }
