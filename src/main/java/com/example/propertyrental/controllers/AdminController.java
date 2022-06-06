@@ -1,12 +1,12 @@
 package com.example.propertyrental.controllers;
 
+import com.example.propertyrental.dto.UserDto;
+import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.service.AdminService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -20,5 +20,11 @@ public class AdminController {
     public ResponseEntity<?> getAllUsers(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "10") int size) {
         return ResponseEntity.ok(adminService.getAllUsers(page, size));
     }
-    
+
+    @PostMapping("/users")
+    public ResponseEntity<?> createUserAdmin(@RequestBody UserRegistrationRequestDto requestDto) {
+        UserDto userDto = adminService.createUserAdmin(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
+    }
+
 }

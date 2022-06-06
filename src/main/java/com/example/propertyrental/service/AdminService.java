@@ -1,8 +1,10 @@
 package com.example.propertyrental.service;
 
 import com.example.propertyrental.dto.UserDto;
+import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.mapper.UserMapper;
 import com.example.propertyrental.model.User;
+import com.example.propertyrental.model.UserRole;
 import com.example.propertyrental.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -20,6 +22,13 @@ public class AdminService {
     public Page<UserDto> getAllUsers(int page, int size) {
         Page<User> userPage = userRepository.findAll(PageRequest.of(page, size));
         return userPage.map(userMapper::toUserDTO);
+    }
+
+    public UserDto createUserAdmin(UserRegistrationRequestDto registrationRequestDto) {
+        User user = userMapper.toUser(registrationRequestDto);
+        user.setUserRole(UserRole.ROLE_ADMIN);
+        User created = userRepository.save(user);
+        return userMapper.toUserDTO(created);
     }
 
 }
