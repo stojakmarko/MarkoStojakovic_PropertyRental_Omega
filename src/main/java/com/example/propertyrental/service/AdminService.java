@@ -7,10 +7,7 @@ import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.mapper.ReservationMapper;
 import com.example.propertyrental.mapper.SubmissionMapper;
 import com.example.propertyrental.mapper.UserMapper;
-import com.example.propertyrental.model.Reservation;
-import com.example.propertyrental.model.Submission;
-import com.example.propertyrental.model.User;
-import com.example.propertyrental.model.UserRole;
+import com.example.propertyrental.model.*;
 import com.example.propertyrental.repository.ReservationRepository;
 import com.example.propertyrental.repository.SubmissionRepository;
 import com.example.propertyrental.repository.UserRepository;
@@ -18,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -51,6 +50,14 @@ public class AdminService {
     public Page<ReservationResponseDto> getAllReservations(int page, int size) {
         Page<Reservation> reservationPage = reservationRepository.findAll(PageRequest.of(page, size));
         return reservationPage.map(reservationMapper::reservationResponseDto);
+    }
+
+    public SubmissionDto updateSubmission(UUID id, Status status, String comment) {
+        Submission submission = submissionRepository.getById(id);
+        Submission updated = submissionMapper.updateSubmission(submission, status, comment);
+        submissionRepository.save(updated);
+        return submissionMapper.toSubmissionDto(updated);
+
     }
 
 }

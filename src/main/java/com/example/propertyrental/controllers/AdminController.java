@@ -1,5 +1,6 @@
 package com.example.propertyrental.controllers;
 
+import com.example.propertyrental.dto.SubmissionDto;
 import com.example.propertyrental.dto.UserDto;
 import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.service.AdminService;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/admin")
@@ -32,6 +34,13 @@ public class AdminController {
     @GetMapping("/properties/submissions")
     public ResponseEntity<?> getAllSubmissions(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "10") int size) {
         return ResponseEntity.ok(adminService.getAllSubmissions(page, size));
+    }
+
+    @PutMapping("/properties/submissions/{id}")
+    public ResponseEntity<?> updateSubmission(@PathVariable("id") UUID id, @RequestBody SubmissionDto submissionDto) {
+
+        SubmissionDto updateSubmission = adminService.updateSubmission(id, submissionDto.getStatus(), submissionDto.getComment());
+        return ResponseEntity.ok(updateSubmission);
     }
 
 

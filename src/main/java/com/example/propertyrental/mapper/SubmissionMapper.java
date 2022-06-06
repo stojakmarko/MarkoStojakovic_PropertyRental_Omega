@@ -36,4 +36,15 @@ public class SubmissionMapper {
                 .build();
     }
 
+    public Submission updateSubmission(Submission submission, Status status, String comment) {
+        return Submission.builder()
+                .id(submission.getId())
+                .created(submission.getCreated())
+                .user(submission.getUser())
+                .property(submission.getProperty())
+                .status(status != null ? status : submission.getStatus())
+                .comment(comment.isEmpty() ? submission.getComment() : comment)
+                .build();
+    }
+
 }
