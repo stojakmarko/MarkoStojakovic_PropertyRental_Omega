@@ -10,6 +10,8 @@ import com.example.propertyrental.model.User;
 import com.example.propertyrental.model.UserRole;
 import com.example.propertyrental.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,11 +26,10 @@ import java.util.UUID;
 @Transactional
 public class UserService {
 
-    private UserRepository userRepository;
-    private UserMapper userMapper;
-
-    private EmailService emailService;
-    private PasswordEncoder passwordEncoder;
+    private final UserRepository userRepository;
+    private final UserMapper userMapper;
+    private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
 
 
     public UserDto createClient(UserRegistrationRequestDto registrationRequest) {
@@ -70,13 +71,27 @@ public class UserService {
         return new MessageResponseDto("You have successfully change password");
     }
 
+
+    public Page<UserDto> getAllUsers(int page, int size) {
+        Page<User> userPage = userRepository.findAll(PageRequest.of(page, size));
+        return userPage.map(userMapper::toUserDTO);
+    }
+
+    public UserDto createUserAdmin(UserRegistrationRequestDto registrationRequestDto) {
+        User user = userMapper.toUser(registrationRequestDto);
+        user.setUserRole(UserRole.ROLE_ADMIN);
+        User created = userRepository.save(user);
+        return userMapper.toUserDTO(created);
+    }
+
+
     private String generatePasswordToken() {
         return UUID.randomUUID().toString();
     }
 
     private String linkChangePassword(HttpServletRequest request) {
         String url = request.getRequestURL().toString();
-        return url.replace(request.getServletPath(), "/api/v1/user/changePassword?token=");
+        return url.replace(request.getServletPath(), "/api/v1/users/changePassword?token=");
     }
 
     private void addTokenToUser(String token, User user) {

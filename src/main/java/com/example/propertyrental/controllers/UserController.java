@@ -9,6 +9,7 @@ import com.example.propertyrental.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/api/v1/user")
+@RequestMapping("/api/v1/users")
 @AllArgsConstructor
 public class UserController {
 
@@ -58,5 +59,19 @@ public class UserController {
         MessageResponseDto responseDto = userService.changePassword(changePasswordDto, token);
         return ResponseEntity.ok(responseDto);
     }
+
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
+    @GetMapping
+    public ResponseEntity<?> getAllUsers(@RequestParam(value = "page", defaultValue = "0") int page, @RequestParam(value = "size", defaultValue = "10") int size) {
+        return ResponseEntity.ok(userService.getAllUsers(page, size));
+    }
+
+    @PreAuthorize(value = "hasAnyRole('ADMIN')")
+    @PostMapping("/addAdmin")
+    public ResponseEntity<?> createUserAdmin(@Valid @RequestBody UserRegistrationRequestDto requestDto) {
+        UserDto userDto = userService.createUserAdmin(requestDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(userDto);
+    }
+
 
 }
