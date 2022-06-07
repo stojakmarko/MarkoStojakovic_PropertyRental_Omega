@@ -2,7 +2,6 @@ package com.example.propertyrental.controllers;
 
 import com.example.propertyrental.dto.PropertyRequestDto;
 import com.example.propertyrental.dto.PropertyResponseDto;
-import com.example.propertyrental.dto.ReservationDto;
 import com.example.propertyrental.dto.SubmissionDto;
 import com.example.propertyrental.service.PropertyService;
 import lombok.AllArgsConstructor;
@@ -53,11 +52,6 @@ public class PropertyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
     }
 
-    @PostMapping("/reservation")
-    public ResponseEntity<?> makeReservation(@RequestBody ReservationDto reservationDto, @AuthenticationPrincipal(expression = "username") String username) {
-        PropertyResponseDto responseDto = propertyService.createReservation(reservationDto, username);
-        return ResponseEntity.status(HttpStatus.CREATED).body(responseDto);
-    }
 
     @PreAuthorize(value = "hasAnyRole('CLIENT')")
     @PutMapping("/{id}")

@@ -1,13 +1,16 @@
 package com.example.propertyrental.service;
 
-import com.example.propertyrental.dto.*;
+import com.example.propertyrental.dto.PropertyRequestDto;
+import com.example.propertyrental.dto.PropertyResponseDto;
+import com.example.propertyrental.dto.SubmissionDto;
 import com.example.propertyrental.exception.NotFoundPropertyException;
 import com.example.propertyrental.mapper.PropertyMapper;
-import com.example.propertyrental.mapper.ReservationMapper;
 import com.example.propertyrental.mapper.SubmissionMapper;
-import com.example.propertyrental.model.*;
+import com.example.propertyrental.model.Property;
+import com.example.propertyrental.model.Status;
+import com.example.propertyrental.model.Submission;
+import com.example.propertyrental.model.User;
 import com.example.propertyrental.repository.PropertyRepository;
-import com.example.propertyrental.repository.ReservationRepository;
 import com.example.propertyrental.repository.SubmissionRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -26,10 +29,8 @@ public class PropertyService {
     private PropertyRepository propertyRepository;
     private PropertyMapper propertyMapper;
     private SubmissionMapper submissionMapper;
-    private ReservationMapper reservationMapper;
     private UserService userService;
     private SubmissionRepository submissionRepository;
-    private ReservationRepository reservationRepository;
 
 
     public Page<PropertyResponseDto> getAllProperties(int page, int size) {
@@ -70,14 +71,6 @@ public class PropertyService {
         propertyRepository.delete(property);
     }
 
-    public PropertyResponseDto createReservation(ReservationDto reservationDto, String username) {
-        Property property = propertyRepository.findById(reservationDto.id()).orElseThrow(NotFoundPropertyException::new);
-        User user = userService.findUserByUsername(username);
-        Reservation reservation = reservationMapper.toReservation(property, user, reservationDto.fromDate(), reservationDto.toDate());
-        reservationRepository.save(reservation);
-        return propertyMapper.toPropertyResponseDto(property);
-
-    }
 
     public SubmissionDto updateSubmission(UUID id, Status status, String comment) {
         Submission submission = submissionRepository.getById(id);
@@ -96,12 +89,6 @@ public class PropertyService {
         Submission submission = submissionRepository.findById(id).orElseThrow(EntityNotFoundException::new);
         return submissionMapper.toSubmissionDto(submission);
     }
-
-    public Page<ReservationResponseDto> getAllReservations(int page, int size) {
-        Page<Reservation> reservationPage = reservationRepository.findAll(PageRequest.of(page, size));
-        return reservationPage.map(reservationMapper::reservationResponseDto);
-    }
-
 
     public void addProperty(Property property) {
         propertyRepository.save(property);
