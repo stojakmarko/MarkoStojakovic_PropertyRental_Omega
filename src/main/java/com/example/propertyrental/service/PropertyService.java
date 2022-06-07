@@ -1,16 +1,11 @@
 package com.example.propertyrental.service;
 
-import com.example.propertyrental.dto.PropertyRequestDto;
-import com.example.propertyrental.dto.PropertyResponseDto;
-import com.example.propertyrental.dto.ReservationDto;
+import com.example.propertyrental.dto.*;
 import com.example.propertyrental.exception.NotFoundPropertyException;
 import com.example.propertyrental.mapper.PropertyMapper;
 import com.example.propertyrental.mapper.ReservationMapper;
 import com.example.propertyrental.mapper.SubmissionMapper;
-import com.example.propertyrental.model.Property;
-import com.example.propertyrental.model.Reservation;
-import com.example.propertyrental.model.Submission;
-import com.example.propertyrental.model.User;
+import com.example.propertyrental.model.*;
 import com.example.propertyrental.repository.PropertyRepository;
 import com.example.propertyrental.repository.ReservationRepository;
 import com.example.propertyrental.repository.SubmissionRepository;
@@ -20,6 +15,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.UUID;
 
 @Service
@@ -82,6 +78,30 @@ public class PropertyService {
         return propertyMapper.toPropertyResponseDto(property);
 
     }
+
+    public SubmissionDto updateSubmission(UUID id, Status status, String comment) {
+        Submission submission = submissionRepository.getById(id);
+        Submission updated = submissionMapper.updateSubmission(submission, status, comment);
+        submissionRepository.save(updated);
+        return submissionMapper.toSubmissionDto(updated);
+
+    }
+
+    public Page<SubmissionDto> getAllSubmissions(int page, int size) {
+        Page<Submission> submissionPage = submissionRepository.findAll(PageRequest.of(page, size));
+        return submissionPage.map(submissionMapper::toSubmissionDto);
+    }
+
+    public SubmissionDto getSubmission(UUID id) {
+        Submission submission = submissionRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+        return submissionMapper.toSubmissionDto(submission);
+    }
+
+    public Page<ReservationResponseDto> getAllReservations(int page, int size) {
+        Page<Reservation> reservationPage = reservationRepository.findAll(PageRequest.of(page, size));
+        return reservationPage.map(reservationMapper::reservationResponseDto);
+    }
+
 
     public void addProperty(Property property) {
         propertyRepository.save(property);
