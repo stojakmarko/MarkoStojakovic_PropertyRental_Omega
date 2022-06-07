@@ -1,10 +1,7 @@
 package com.example.propertyrental.controllers;
 
 
-import com.example.propertyrental.dto.AuthenticationRequestDto;
-import com.example.propertyrental.dto.AuthenticationResponseDto;
-import com.example.propertyrental.dto.UserDto;
-import com.example.propertyrental.dto.UserRegistrationRequestDto;
+import com.example.propertyrental.dto.*;
 import com.example.propertyrental.security.CustomDetailUserService;
 import com.example.propertyrental.security.CustomUserDetails;
 import com.example.propertyrental.security.JwtTokenUtil;

@@ -35,7 +35,7 @@ public class UserRegistrationRequestDto {
     private String password;
     private String verifyPassword;
 
-    @Email(message = "Email should be farmatted")
+    @Email(message = "Email should be formatted")
     @UniqueEmail
     private String email;
 

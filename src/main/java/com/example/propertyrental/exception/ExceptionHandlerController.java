@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.persistence.EntityNotFoundException;
+
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -36,8 +38,16 @@ public class ExceptionHandlerController extends ResponseEntityExceptionHandler {
     protected ResponseEntity<Object> handleEntityNotFound(
             NotFoundPropertyException ex) {
         ApiError apiError = new ApiError(NOT_FOUND);
-        apiError.setMessage("Not found property");
+        apiError.setMessage("Property not found");
         apiError.setDebugMessage(ex.getMessage());
+        return buildResponseEntity(apiError);
+    }
+
+    @ExceptionHandler(value = {EntityNotFoundException.class})
+    protected ResponseEntity<Object> handleEntityNotFound(
+            EntityNotFoundException ex) {
+        ApiError apiError = new ApiError(NOT_FOUND);
+        apiError.setMessage("Not found");
         return buildResponseEntity(apiError);
     }
 

@@ -1,6 +1,8 @@
 package com.example.propertyrental.service;
 
 
+import com.example.propertyrental.dto.ChangePasswordDto;
+import com.example.propertyrental.dto.MessageResponseDto;
 import com.example.propertyrental.dto.UserDto;
 import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.mapper.UserMapper;
