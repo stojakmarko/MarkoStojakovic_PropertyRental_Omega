@@ -1,13 +1,16 @@
 spring:
   datasource:
+    url: jdbc:mysql://localhost:3306/property_rental?useUnicode=true&characterEncoding=utf8&createDatabaseIfNotExist=true
+    driver-class-name: com.mysql.cj.jdbc.Driver
     username: 'admin'
-    url: jdbc:h2:mem:property-rental
-    password: 'admin'
-    driver-class-name: org.h2.Driver
+    password: 'Admin123'
+
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create
+        ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
   h2:
     console:
       enabled: true
