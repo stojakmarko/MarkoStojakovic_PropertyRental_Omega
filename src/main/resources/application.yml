@@ -30,4 +30,4 @@ property-rental:
   security:
     jwt:
       secret: somesecretkey
-      time: 3600
+      expirationTime: 3600

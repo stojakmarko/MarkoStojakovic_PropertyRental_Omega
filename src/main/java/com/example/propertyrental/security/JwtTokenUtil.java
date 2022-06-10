@@ -17,14 +17,14 @@ public class JwtTokenUtil {
 
     @Value("${property-rental.security.jwt.secret}")
     private String secret;
-    @Value("${property-rental.security.jwt.time}")
+    @Value("${property-rental.security.jwt.expirationTime}")
     private String time;
 
-    public String genarateToken(User user) {
-        return doGenarateToken(user.getUserName());
+    public String generateToken(User user) {
+        return doGenerateToken(user.getUserName());
     }
 
-    private String doGenarateToken(String userName) {
+    private String doGenerateToken(String userName) {
         return Jwts.builder()
                 .setClaims(Jwts.claims().setSubject(userName))
                 .setIssuedAt(new Date())
