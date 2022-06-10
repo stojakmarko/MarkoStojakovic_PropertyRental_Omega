@@ -56,6 +56,7 @@ class UserMapperTest {
         assertEquals(user1.getUserName(), userRegistrationRequestDto.getUsername());
         assertEquals(user1.getFirstName(), userRegistrationRequestDto.getFirstname());
         assertEquals(user1.getEmail(), userRegistrationRequestDto.getEmail());
+        assertEquals(user1.getClass(),User.class);
 
     }
 
@@ -68,6 +69,7 @@ class UserMapperTest {
         assertEquals(userDto1.getFirstname(), user.getFirstName());
         assertEquals(userDto1.getRole().toString(), user.getUserRole().toString());
         assertEquals(userDto1.getEmail(), user.getEmail());
+        assertEquals(userDto1.getClass(),UserDto.class);
     }
 
 }
