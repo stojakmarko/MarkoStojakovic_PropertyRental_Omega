@@ -34,7 +34,7 @@ public class UserController {
 
         authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authenticationRequestDto.username(), authenticationRequestDto.password()));
         CustomUserDetails userDetails = (CustomUserDetails) detailUserServiceService.loadUserByUsername(authenticationRequestDto.username());
-        String token = jwt.genarateToken(userDetails.getUser());
+        String token = jwt.generateToken(userDetails.getUser());
         AuthenticationResponseDto responseDto = AuthenticationResponseDto.builder()
                 .accessToken(token)
                 .build();
