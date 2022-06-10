@@ -7,9 +7,6 @@ spring:
   sql:
     init:
       mode: never
-  profiles:
-    active: test
-
 
   jpa:
     hibernate:
@@ -19,6 +16,7 @@ spring:
         dialect:  org.hibernate.dialect.H2Dialect
         format_sql: true
     show-sql: true
+
 
   mail:
     host: smtp.gmail.com

@@ -7,14 +7,12 @@ import com.example.propertyrental.service.PropertyService;
 import com.example.propertyrental.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 
 @Component
 @AllArgsConstructor
-@Profile("test")
 public class AppCommandRunner implements CommandLineRunner {
 
     private UserService userService;
