@@ -6,8 +6,8 @@ import com.example.propertyrental.model.UserRole;
 
 public class CreateObjectTest {
 
-    public static User userEntity(){
-        return  User
+    public static User userEntity() {
+        return User
                 .builder()
                 .firstName("test")
                 .lastName("test")
@@ -18,8 +18,8 @@ public class CreateObjectTest {
 
     }
 
-    public static Property propertyEntity(){
-        return  Property.builder()
+    public static Property propertyEntity() {
+        return Property.builder()
                 .name("property")
                 .location("test")
                 .price(1000)
