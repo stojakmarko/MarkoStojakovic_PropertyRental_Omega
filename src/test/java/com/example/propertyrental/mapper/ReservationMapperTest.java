@@ -4,7 +4,6 @@ import com.example.propertyrental.dto.ReservationResponseDto;
 import com.example.propertyrental.model.Property;
 import com.example.propertyrental.model.Reservation;
 import com.example.propertyrental.model.User;
-import com.example.propertyrental.model.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,37 +28,12 @@ class ReservationMapperTest {
 
     @BeforeEach
     public void setUp() {
-        user = User
-                .builder()
-                .firstName("test")
-                .lastName("test")
-                .userName("test")
-                .email("test")
-                .userRole(UserRole.ROLE_CLIENT)
-                .build();
 
-        property = Property.builder()
-                .name("property")
-                .location("test")
-                .price(1000)
-                .availability(true)
-                .freeParking(true)
-                .numOfBedrooms(4)
-                .numOfSleepPlace(2)
-                .pool(false)
-                .wifi(true)
-                .owner(user)
-                .build();
-
+        user = CreateObjectTest.userEntity();
+        property = CreateObjectTest.propertyEntity();
         reservationFrom = LocalDate.of(2022, 06, 10);
         reservationTo = LocalDate.of(2022, 06, 17);
-
-        reservation = Reservation.builder()
-                .property(property)
-                .reservationTo(reservationTo)
-                .reservationFrom(reservationFrom)
-                .user(user)
-                .build();
+        reservation = createReservationEntity();
 
     }
 
@@ -84,6 +58,15 @@ class ReservationMapperTest {
         assertEquals(reservation.getUser().getId(), reservationResponseDto.getUserId());
         assertEquals(reservation.getProperty().getId(), reservationResponseDto.getPropertyId());
 
+    }
+
+    private Reservation createReservationEntity() {
+        return Reservation.builder()
+                .property(property)
+                .reservationTo(reservationTo)
+                .reservationFrom(reservationFrom)
+                .user(user)
+                .build();
     }
 
 }
