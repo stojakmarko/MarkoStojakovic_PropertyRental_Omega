@@ -18,7 +18,6 @@ class UserMapperTest {
     private UserMapper userMapper;
 
     private User user;
-    private UserDto userDto;
     private UserRegistrationRequestDto userRegistrationRequestDto;
 
     @BeforeEach
@@ -30,14 +29,6 @@ class UserMapperTest {
                 .userName("test")
                 .email("test")
                 .userRole(UserRole.ROLE_CLIENT)
-                .build();
-        userDto = UserDto
-                .builder()
-                .firstname("test")
-                .lastname("test")
-                .username("test")
-                .email("test")
-                .role(UserRole.ROLE_CLIENT.toString())
                 .build();
 
         userRegistrationRequestDto = new UserRegistrationRequestDto("test", "test", "test", "test", "test", "test");
