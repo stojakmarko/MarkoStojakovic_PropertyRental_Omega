@@ -49,19 +49,19 @@ class UserMapperTest {
 
 
     @Test
-    void shouldCreate_UserEntity() {
+    void createUserEntity_allFieldsOK() {
 
         User user1 = userMapper.toUser(userRegistrationRequestDto);
 
         assertEquals(user1.getUserName(), userRegistrationRequestDto.getUsername());
         assertEquals(user1.getFirstName(), userRegistrationRequestDto.getFirstname());
         assertEquals(user1.getEmail(), userRegistrationRequestDto.getEmail());
-        assertEquals(user1.getClass(),User.class);
+        assertEquals(user1.getClass(), User.class);
 
     }
 
     @Test
-    void shouldCreate_UserDTO() {
+    void createUserDTO_allFieldsOK() {
 
         UserDto userDto1 = userMapper.toUserDTO(user);
 
@@ -69,7 +69,7 @@ class UserMapperTest {
         assertEquals(userDto1.getFirstname(), user.getFirstName());
         assertEquals(userDto1.getRole().toString(), user.getUserRole().toString());
         assertEquals(userDto1.getEmail(), user.getEmail());
-        assertEquals(userDto1.getClass(),UserDto.class);
+        assertEquals(userDto1.getClass(), UserDto.class);
     }
 
 }

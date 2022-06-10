@@ -64,7 +64,7 @@ class PropertyMapperTest {
     }
 
     @Test
-    void should_create_PropertyResponseDto() {
+    void createPropertyResponseDTO_allFieldsOk() {
         PropertyResponseDto propertyResponseDto = propertyMapper.toPropertyResponseDto(property);
         assertEquals(propertyResponseDto.getLocation(), property.getLocation());
         assertEquals(propertyResponseDto.getPrice(), property.getPrice());
@@ -74,7 +74,7 @@ class PropertyMapperTest {
     }
 
     @Test
-    void should_create_Property() {
+    void createProperty_allFieldsOK() {
         Property property1 = propertyMapper.toProperty(propertyRequestDto, user);
         assertEquals(property1.getOwner(), user);
         assertEquals(property1.getOwner().getClass(), user.getClass());
@@ -84,7 +84,7 @@ class PropertyMapperTest {
     }
 
     @Test
-    void should_update_Property() {
+    void updateProperty_allFieldsOK() {
         Property property2 = propertyMapper.updateProperty(property, propertyRequestDto);
         assertEquals(property2.getName(), propertyRequestDto.getName());
         assertEquals(property2.getNumOfBedrooms(), propertyRequestDto.getNumOfBedrooms());
