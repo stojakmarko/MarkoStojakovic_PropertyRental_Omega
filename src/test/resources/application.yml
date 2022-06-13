@@ -6,7 +6,8 @@ spring:
     password: 'test'
   sql:
     init:
-      mode: never
+      mode: always
+      schema-locations: classpath:data-test.sql
 
   jpa:
     hibernate:
@@ -15,7 +16,8 @@ spring:
       hibernate:
         dialect:  org.hibernate.dialect.H2Dialect
         format_sql: true
-    show-sql: true
+    defer-datasource-initialization: true
+
 
 
   mail:
