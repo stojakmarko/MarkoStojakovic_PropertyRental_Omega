@@ -1,4 +1,4 @@
-package com.example.propertyrental.mapper;
+package com.example.propertyrental.unit;
 
 import com.example.propertyrental.model.Property;
 import com.example.propertyrental.model.User;
