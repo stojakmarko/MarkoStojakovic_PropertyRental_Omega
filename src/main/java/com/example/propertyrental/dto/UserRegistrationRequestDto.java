@@ -4,6 +4,7 @@ import com.example.propertyrental.validation.FieldsValueMatch;
 import com.example.propertyrental.validation.UniqueEmail;
 import com.example.propertyrental.validation.UniqueUsername;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,6 +21,7 @@ import javax.validation.constraints.Size;
                 message = "Passwords do not match!"
         )
 })
+@Builder
 public class UserRegistrationRequestDto {
 
 
