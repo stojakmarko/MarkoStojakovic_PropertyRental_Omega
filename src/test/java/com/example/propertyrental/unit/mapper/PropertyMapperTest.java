@@ -1,7 +1,8 @@
-package com.example.propertyrental.mapper;
+package com.example.propertyrental.unit.mapper;
 
 import com.example.propertyrental.dto.PropertyRequestDto;
 import com.example.propertyrental.dto.PropertyResponseDto;
+import com.example.propertyrental.mapper.PropertyMapper;
 import com.example.propertyrental.model.Property;
 import com.example.propertyrental.model.User;
 import org.junit.jupiter.api.BeforeEach;

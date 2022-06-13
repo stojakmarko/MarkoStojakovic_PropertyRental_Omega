@@ -1,6 +1,7 @@
-package com.example.propertyrental.mapper;
+package com.example.propertyrental.unit.mapper;
 
 import com.example.propertyrental.dto.ReservationResponseDto;
+import com.example.propertyrental.mapper.ReservationMapper;
 import com.example.propertyrental.model.Property;
 import com.example.propertyrental.model.Reservation;
 import com.example.propertyrental.model.User;

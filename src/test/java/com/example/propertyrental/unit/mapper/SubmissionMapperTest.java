@@ -1,6 +1,7 @@
-package com.example.propertyrental.mapper;
+package com.example.propertyrental.unit.mapper;
 
 import com.example.propertyrental.dto.SubmissionDto;
+import com.example.propertyrental.mapper.SubmissionMapper;
 import com.example.propertyrental.model.Property;
 import com.example.propertyrental.model.Status;
 import com.example.propertyrental.model.Submission;
