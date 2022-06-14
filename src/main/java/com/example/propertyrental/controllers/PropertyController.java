@@ -55,7 +55,7 @@ public class PropertyController {
 
     @PreAuthorize(value = "hasAnyRole('CLIENT')")
     @PutMapping("/{id}")
-    public ResponseEntity<PropertyResponseDto> updateProperty(@RequestBody PropertyRequestDto propertyRequestDto, @PathVariable("id") UUID id,
+    public ResponseEntity<PropertyResponseDto> updateProperty(@Valid @RequestBody PropertyRequestDto propertyRequestDto, @PathVariable("id") UUID id,
                                                               @AuthenticationPrincipal(expression = "username") String username) {
         PropertyResponseDto responseDto = propertyService.updateProperty(propertyRequestDto, id, username);
         return ResponseEntity.ok().body(responseDto);
