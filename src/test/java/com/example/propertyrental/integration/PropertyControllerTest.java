@@ -1,6 +1,10 @@
 package com.example.propertyrental.integration;
 
+import com.example.propertyrental.dto.PageResponseDto;
 import com.example.propertyrental.dto.PropertyRequestDto;
+import com.example.propertyrental.dto.PropertyResponseDto;
+import com.example.propertyrental.exception.ApiError;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -44,11 +48,12 @@ public class PropertyControllerTest {
         MvcResult result = mockMvc.perform(get("/api/v1/properties"))
                 .andExpect(status().isOk())
                 .andReturn();
+        PageResponseDto<?> response = TestUtil.asPage(result.getResponse().getContentAsString(), new TypeReference<PageResponseDto<PropertyResponseDto>>() {
+        });
 
-        JSONObject response = createJson(result.getResponse().getContentAsString());
-        assertEquals(23, response.get("totalElements"));
-        assertEquals(10, response.get("numberOfElements"));
-        assertEquals(3, response.get("totalPages"));
+        assertEquals(23, response.getTotalElements());
+        assertEquals(10, response.getNumberOfElements());
+        assertEquals(3, response.getTotalPages());
     }
 
     @Test
@@ -57,10 +62,13 @@ public class PropertyControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        JSONObject response = createJson(result.getResponse().getContentAsString());
-        assertEquals(23, response.get("totalElements"));
-        assertEquals(5, response.get("numberOfElements"));
-        assertEquals(5, response.get("totalPages"));
+        PageResponseDto<?> response = TestUtil.asPage(result.getResponse().getContentAsString(), new TypeReference<PageResponseDto<PropertyResponseDto>>() {
+        });
+
+        assertEquals(23, response.getTotalElements());
+        assertEquals(5, response.getNumberOfElements());
+        assertEquals(5, response.getTotalPages());
+
 
     }
 
@@ -70,13 +78,13 @@ public class PropertyControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        JSONObject response = createJson(result.getResponse().getContentAsString());
-        String search = response.getJSONArray("content").getJSONObject(0).getString("name");
+        PageResponseDto<?> response = TestUtil.asPage(result.getResponse().getContentAsString(), new TypeReference<PageResponseDto<PropertyResponseDto>>() {
+        });
 
-        assertEquals(3, response.get("totalElements"));
-        assertEquals(3, response.get("numberOfElements"));
-        assertEquals(1, response.get("totalPages"));
-        assertEquals("test", search);
+        assertEquals(3, response.getTotalElements());
+        assertEquals(3, response.getNumberOfElements());
+        assertEquals(1, response.getTotalPages());
+
 
     }
 
@@ -86,9 +94,10 @@ public class PropertyControllerTest {
         MvcResult result = mockMvc.perform(get("/api/v1/properties/{id}", "0c54590d-522e-452c-bff2-1e2fe6e869de"))
                 .andExpect(status().isOk())
                 .andReturn();
-        JSONObject response = createJson(result.getResponse().getContentAsString());
 
-        assertEquals("0c54590d-522e-452c-bff2-1e2fe6e869de", response.getString("id"));
+        PropertyResponseDto response = (PropertyResponseDto) TestUtil.asObject(result.getResponse().getContentAsString(), PropertyResponseDto.class);
+
+        assertEquals("0c54590d-522e-452c-bff2-1e2fe6e869de", response.getId().toString());
 
     }
 
@@ -98,11 +107,10 @@ public class PropertyControllerTest {
         MvcResult result = mockMvc.perform(get("/api/v1/properties/{id}", "0c54590d-522e-452c-bff2-1e2fe"))
                 .andExpect(status().isNotFound())
                 .andReturn();
-        JSONObject response = createJson(result.getResponse().getContentAsString());
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
 
-        assertEquals("Property not found", response.getString("message"));
-        assertEquals("NOT_FOUND", response.getString("status"));
-
+        assertEquals("Property not found", response.getMessage());
+        assertEquals("404 NOT_FOUND", response.getStatus().toString());
 
     }
 
@@ -123,8 +131,9 @@ public class PropertyControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        JSONObject response = createJson(result.getResponse().getContentAsString());
-        assertEquals(requestDto.getName(), response.getString("name"));
+
+        PropertyResponseDto response = (PropertyResponseDto) TestUtil.asObject(result.getResponse().getContentAsString(), PropertyResponseDto.class);
+        assertEquals(requestDto.getName(), response.getName());
 
 
     }
@@ -146,8 +155,8 @@ public class PropertyControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andReturn();
 
-        JSONObject response = createJson(result.getResponse().getContentAsString());
-        assertEquals("Not authorized!", response.getString("message"));
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
+        assertEquals("Not authorized!", response.getMessage());
 
 
     }
@@ -168,8 +177,8 @@ public class PropertyControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
-        JSONObject response = createJson(result.getResponse().getContentAsString());
-        assertEquals("Validation error", response.getString("message"));
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
+        assertEquals("Validation error", response.getMessage());
 
     }
 
@@ -211,8 +220,8 @@ public class PropertyControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        JSONObject response = createJson(result.getResponse().getContentAsString());
-        assertEquals("updated-property", response.getString("name"));
+        PropertyResponseDto response = (PropertyResponseDto) TestUtil.asObject(result.getResponse().getContentAsString(), PropertyResponseDto.class);
+        assertEquals("updated-property", response.getName());
 
     }
 
@@ -233,10 +242,11 @@ public class PropertyControllerTest {
                 .andExpect(status().isNotFound())
                 .andReturn();
 
-        JSONObject response = createJson(result.getResponse().getContentAsString());
 
-        assertEquals("Property not found", response.getString("message"));
-        assertEquals("NOT_FOUND", response.getString("status"));
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
+
+        assertEquals("Property not found", response.getMessage());
+        assertEquals("404 NOT_FOUND", response.getStatus().toString());
 
 
     }
@@ -257,9 +267,8 @@ public class PropertyControllerTest {
                 .andExpect(status().isBadRequest())
                 .andReturn();
 
-
-        JSONObject response = createJson(result.getResponse().getContentAsString());
-        assertEquals("Validation error", response.getString("message"));
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
+        assertEquals("Validation error", response.getMessage());
 
     }
 
@@ -280,12 +289,6 @@ public class PropertyControllerTest {
         mockMvc.perform(get("/api/v1/properties/submissions"))
                 .andExpect(status().isForbidden())
                 .andReturn();
-    }
-
-
-    private JSONObject createJson(String string) throws Exception {
-        JSONObject json = new JSONObject(string);
-        return json;
     }
 
 

@@ -1,6 +1,10 @@
 package com.example.propertyrental.integration;
 
+import com.example.propertyrental.dto.PageResponseDto;
+import com.example.propertyrental.dto.PropertyResponseDto;
 import com.example.propertyrental.dto.ReservationDto;
+import com.example.propertyrental.exception.ApiError;
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -49,10 +53,13 @@ public class ReservationControllerTest {
         MvcResult result = mockMvc.perform(get("/api/v1/reservations"))
                 .andExpect(status().isOk())
                 .andReturn();
-        JSONObject response = createJson(result.getResponse().getContentAsString());
-        assertEquals(0, response.get("totalElements"));
-        assertEquals(0, response.get("numberOfElements"));
-        assertEquals(0, response.get("totalPages"));
+
+        PageResponseDto<?> response = TestUtil.asPage(result.getResponse().getContentAsString(), new TypeReference<PageResponseDto<PropertyResponseDto>>() {
+        });
+
+        assertEquals(0, response.getTotalElements());
+        assertEquals(0, response.getNumberOfElements());
+        assertEquals(0, response.getTotalPages());
 
     }
 
@@ -73,15 +80,15 @@ public class ReservationControllerTest {
                         .header("Authorization", "Bearer notValid"))
                 .andExpect(status().isUnauthorized())
                 .andReturn();
-        JSONObject response = createJson(result.getResponse().getContentAsString());
-        assertEquals("Not authorized!", response.getString("message"));
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
+        assertEquals("Not authorized!", response.getMessage());
     }
 
     @Test
     public void makeReservation_withoutAccessToken_statusIsUnauthorized() throws Exception {
         UUID propertyId = UUID.fromString("0c54590d-522e-452c-bff2-1e2fe6e869de");
-        LocalDate fromDate = LocalDate.of(2022, 06, 13);
-        LocalDate toDate = LocalDate.of(2022, 06, 17);
+        LocalDate fromDate = LocalDate.of(2022, 6, 13);
+        LocalDate toDate = LocalDate.of(2022, 6, 17);
         ReservationDto request = new ReservationDto(propertyId, fromDate, toDate);
 
         MvcResult result = mockMvc.perform(post("/api/v1/reservations")
@@ -91,8 +98,8 @@ public class ReservationControllerTest {
                 .andExpect(status().isUnauthorized())
                 .andReturn();
 
-        JSONObject response = createJson(result.getResponse().getContentAsString());
-        assertEquals("Not authorized!", response.getString("message"));
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
+        assertEquals("Not authorized!", response.getMessage());
 
 
     }
@@ -101,8 +108,8 @@ public class ReservationControllerTest {
     @WithMockUser(username = "mark", authorities = {"ROLE_CLIENT"})
     public void makeReservation_withAccessToken_statusIsCreated() throws Exception {
         UUID propertyId = UUID.fromString("0c54590d-522e-452c-bff2-1e2fe6e869de");
-        LocalDate fromDate = LocalDate.of(2022, 06, 13);
-        LocalDate toDate = LocalDate.of(2022, 06, 17);
+        LocalDate fromDate = LocalDate.of(2022, 6, 13);
+        LocalDate toDate = LocalDate.of(2022, 6, 17);
         ReservationDto request = new ReservationDto(propertyId, fromDate, toDate);
 
         MvcResult result = mockMvc.perform(post("/api/v1/reservations")
@@ -111,10 +118,9 @@ public class ReservationControllerTest {
                 .andExpect(status().isCreated())
                 .andReturn();
 
-        JSONObject response = createJson(result.getResponse().getContentAsString());
+        PropertyResponseDto response = (PropertyResponseDto) TestUtil.asObject(result.getResponse().getContentAsString(), PropertyResponseDto.class);
 
-        assertEquals(propertyId.toString(), response.getString("id"));
-
+        assertEquals(propertyId.toString(), response.getId().toString());
 
     }
 
@@ -122,8 +128,8 @@ public class ReservationControllerTest {
     @WithMockUser(username = "mark", authorities = {"ROLE_CLIENT"})
     public void makeReservation_withAccessToken_notExistId_statusIsNotFound() throws Exception {
         UUID propertyId = UUID.fromString("0c54590d-522e-452c-bff2-1e2f");
-        LocalDate fromDate = LocalDate.of(2022, 06, 13);
-        LocalDate toDate = LocalDate.of(2022, 06, 17);
+        LocalDate fromDate = LocalDate.of(2022, 6, 13);
+        LocalDate toDate = LocalDate.of(2022, 6, 17);
         ReservationDto request = new ReservationDto(propertyId, fromDate, toDate);
 
         MvcResult result = mockMvc.perform(post("/api/v1/reservations")
@@ -132,10 +138,10 @@ public class ReservationControllerTest {
                 .andExpect(status().isNotFound())
                 .andReturn();
 
-        JSONObject response = createJson(result.getResponse().getContentAsString());
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
 
-        assertEquals("Property not found", response.getString("message"));
-        assertEquals("NOT_FOUND", response.getString("status"));
+        assertEquals("Property not found", response.getMessage());
+        assertEquals("404 NOT_FOUND", response.getStatus().toString());
 
 
     }
