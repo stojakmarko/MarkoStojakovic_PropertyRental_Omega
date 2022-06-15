@@ -5,7 +5,6 @@ import com.example.propertyrental.dto.PropertyResponseDto;
 import com.example.propertyrental.dto.ReservationDto;
 import com.example.propertyrental.exception.ApiError;
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -144,11 +143,6 @@ public class ReservationControllerTest {
         assertEquals("404 NOT_FOUND", response.getStatus().toString());
 
 
-    }
-
-    private JSONObject createJson(String string) throws Exception {
-        JSONObject json = new JSONObject(string);
-        return json;
     }
 
 

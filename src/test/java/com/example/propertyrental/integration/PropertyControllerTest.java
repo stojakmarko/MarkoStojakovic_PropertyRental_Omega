@@ -5,7 +5,6 @@ import com.example.propertyrental.dto.PropertyRequestDto;
 import com.example.propertyrental.dto.PropertyResponseDto;
 import com.example.propertyrental.exception.ApiError;
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
