@@ -1,6 +1,7 @@
 package com.example.propertyrental.dto;
 
 import com.example.propertyrental.validation.FieldsValueMatch;
+import lombok.Builder;
 import lombok.Data;
 
 @Data
@@ -11,6 +12,7 @@ import lombok.Data;
                 message = "Passwords do not match!"
         )
 })
+@Builder
 public class ChangePasswordDto {
 
     private String newPassword;

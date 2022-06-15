@@ -44,7 +44,7 @@ public class UserService {
         String token = generatePasswordToken();
         String url = linkChangePassword(request);
         addTokenToUser(token, user);
-        changePasswordEmailToUser(user, url, token);
+        emailToUser(user, url, token);
         return new MessageResponseDto("You have received  an email!");
     }
 
@@ -99,7 +99,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    private void changePasswordEmailToUser(User user, String link, String token) {
+    private void emailToUser(User user, String link, String token) {
         String url = link + token;
         String text = "Click on link to change password \n\n" + url;
         String email = user.getEmail();
