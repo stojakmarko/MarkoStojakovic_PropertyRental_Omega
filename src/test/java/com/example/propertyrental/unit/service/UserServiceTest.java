@@ -102,7 +102,7 @@ public class UserServiceTest {
         assertThrows(BadCredentialsException.class, () -> userService.changePassword(request, "token"));
     }
 
-    //    @Test
+    @Test
     public void forgotPassword_sendEmail_whenUserExist() {
         MockHttpServletRequest servletRequest = new MockHttpServletRequest();
         servletRequest.setServerName("localhost");
