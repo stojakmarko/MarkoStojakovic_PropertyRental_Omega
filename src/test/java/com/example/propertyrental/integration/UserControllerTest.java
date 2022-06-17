@@ -183,7 +183,7 @@ public class UserControllerTest {
     }
 
     @Test
-    public void forgotPassword_withInvalidUsername_statusBad() throws Exception {
+    public void forgotPassword_withInvalidUsername_statusUnauthorized() throws Exception {
         ForgotPasswordDto requestDto = ForgotPasswordDto.builder()
                 .username("markoooooo")
                 .build();
