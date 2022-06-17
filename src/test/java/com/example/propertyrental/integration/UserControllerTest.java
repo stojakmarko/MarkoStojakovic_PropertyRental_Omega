@@ -1,8 +1,6 @@
 package com.example.propertyrental.integration;
 
-import com.example.propertyrental.dto.AuthenticationRequestDto;
-import com.example.propertyrental.dto.UserDto;
-import com.example.propertyrental.dto.UserRegistrationRequestDto;
+import com.example.propertyrental.dto.*;
 import com.example.propertyrental.exception.ApiError;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -164,6 +162,35 @@ public class UserControllerTest {
         mockMvc.perform(get("/api/v1/users"))
                 .andExpect(status().isOk())
                 .andReturn();
+    }
+
+
+    @Test
+    public void forgotPassword_withValidUsername_statusOK() throws Exception {
+        ForgotPasswordDto requestDto = ForgotPasswordDto.builder()
+                .username("markoooooo12222")
+                .build();
+        MvcResult result = mockMvc.perform(post("/api/v1/users/forgotPassword")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtil.asJsonString(requestDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        MessageResponseDto response = (MessageResponseDto) TestUtil.asObject(result.getResponse().getContentAsString(), MessageResponseDto.class);
+        assertEquals("You have received  an email!", response.message());
+
+
+    }
+
+    @Test
+    public void forgotPassword_withInvalidUsername_statusBad() throws Exception {
+        ForgotPasswordDto requestDto = ForgotPasswordDto.builder()
+                .username("markoooooo")
+                .build();
+        mockMvc.perform(post("/api/v1/users/forgotPassword")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtil.asJsonString(requestDto)))
+                .andExpect(status().isUnauthorized());
     }
 
 
