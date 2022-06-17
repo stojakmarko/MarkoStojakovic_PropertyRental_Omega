@@ -22,5 +22,9 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+        mail.username: echo ${{sicrets.MAIL_USERNAME}}
+        mail.password: echo ${{sicrets.MAIL_PASSWORD}}
+         
+          
     - name: Build with Maven
       run: mvn -B package --file pom.xml
