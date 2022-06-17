@@ -6,26 +6,29 @@ spring:
   sql:
     init:
       mode: never
+  config:
+    import: optional:secrets.yml
 
   jpa:
     hibernate:
-        ddl-auto: update
+      ddl-auto: update
     properties:
       hibernate:
-        dialect:  org.hibernate.dialect.PostgreSQLDialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
 
   mail:
     host: smtp.gmail.com
     port: 587
-    username: testtspring
-    password: 
+    username:
+    password:
     properties:
       mail:
         smtp:
           auth: true
           starttls:
             enable: true
+
 property-rental:
   security:
     jwt:
