@@ -193,5 +193,55 @@ public class UserControllerTest {
                 .andExpect(status().isUnauthorized());
     }
 
+    @Test
+    @WithMockUser(username = "markoooooo12222", authorities = {"ROLE_CLIENT"})
+    public void changePassword_withValidPasswordToken_statusOk() throws Exception {
+        ChangePasswordDto requestDto = ChangePasswordDto.builder()
+                .newPassword("testpass")
+                .verifyPassword("testpass")
+                .build();
+        MvcResult result = mockMvc.perform(post("/api/v1/users/changePassword?token=test-test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtil.asJsonString(requestDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+//        MessageResponseDto response = (MessageResponseDto) TestUtil.asObject(result.getResponse().getContentAsString(), MessageResponseDto.class);
+//        assertEquals("You have successfully change password", response.message());
+        System.out.println(result.getResponse().getContentAsString());
+    }
+
+    @Test
+    public void changePassword_withInvalidPasswordToken_statusOk() throws Exception {
+        ChangePasswordDto requestDto = ChangePasswordDto.builder()
+                .newPassword("testpass")
+                .verifyPassword("testpass")
+                .build();
+        mockMvc.perform(post("/api/v1/users/changePassword?token=testInvalid")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtil.asJsonString(requestDto)))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+
+    }
+
+    @Test
+    public void changePassword_withValidPasswordToken_notVerifyPassword_statusBadRequest() throws Exception {
+        ChangePasswordDto requestDto = ChangePasswordDto.builder()
+                .newPassword("testpass")
+                .verifyPassword("test")
+                .build();
+        MvcResult result = mockMvc.perform(post("/api/v1/users/changePassword?token=test-test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtil.asJsonString(requestDto)))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
+
+        assertEquals("Validation error", response.getMessage());
+        assertEquals("Passwords do not match!", response.getSubErrors().get(0).getMessage());
+
+    }
+
 
 }
