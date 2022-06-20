@@ -4,6 +4,7 @@ import com.example.propertyrental.dto.UserDto;
 import com.example.propertyrental.dto.UserRegistrationRequestDto;
 import com.example.propertyrental.mapper.UserMapper;
 import com.example.propertyrental.model.User;
+import com.example.propertyrental.model.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,14 @@ class UserMapperTest {
 
     @BeforeEach
     public void setUp() {
-        user = CreateObjectTest.userEntity();
+        user = User
+                .builder()
+                .firstName("test")
+                .lastName("test")
+                .userName("test")
+                .email("test")
+                .userRole(UserRole.ROLE_CLIENT)
+                .build();
         userRegistrationRequestDto = new UserRegistrationRequestDto("test", "test", "test", "test", "test", "test");
 
     }

@@ -5,6 +5,7 @@ import com.example.propertyrental.dto.PropertyResponseDto;
 import com.example.propertyrental.mapper.PropertyMapper;
 import com.example.propertyrental.model.Property;
 import com.example.propertyrental.model.User;
+import com.example.propertyrental.model.UserRole;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +25,26 @@ class PropertyMapperTest {
 
     @BeforeEach
     public void setUp() {
-        user = CreateObjectTest.userEntity();
-        property = CreateObjectTest.propertyEntity();
+        user = User
+                .builder()
+                .firstName("test")
+                .lastName("test")
+                .userName("test")
+                .email("test")
+                .userRole(UserRole.ROLE_CLIENT)
+                .build();
+        property = Property.builder()
+                .name("property")
+                .location("test")
+                .price(1000)
+                .availability(true)
+                .freeParking(true)
+                .numOfBedrooms(4)
+                .numOfSleepPlace(2)
+                .pool(false)
+                .wifi(true)
+                .owner(user)
+                .build();
         propertyRequestDto = createPropertyRequestDto();
 
     }

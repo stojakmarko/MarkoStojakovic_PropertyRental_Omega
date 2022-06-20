@@ -3,6 +3,7 @@ package com.example.propertyrental.integration;
 import com.example.propertyrental.dto.PageResponseDto;
 import com.example.propertyrental.dto.PropertyRequestDto;
 import com.example.propertyrental.dto.PropertyResponseDto;
+import com.example.propertyrental.dto.SubmissionDto;
 import com.example.propertyrental.exception.ApiError;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
@@ -50,7 +53,7 @@ public class PropertyControllerTest {
         PageResponseDto<?> response = TestUtil.asPage(result.getResponse().getContentAsString(), new TypeReference<PageResponseDto<PropertyResponseDto>>() {
         });
 
-        assertEquals(23, response.getTotalElements());
+        assertEquals(22, response.getTotalElements());
         assertEquals(10, response.getNumberOfElements());
         assertEquals(3, response.getTotalPages());
     }
@@ -64,7 +67,7 @@ public class PropertyControllerTest {
         PageResponseDto<?> response = TestUtil.asPage(result.getResponse().getContentAsString(), new TypeReference<PageResponseDto<PropertyResponseDto>>() {
         });
 
-        assertEquals(23, response.getTotalElements());
+        assertEquals(22, response.getTotalElements());
         assertEquals(5, response.getNumberOfElements());
         assertEquals(5, response.getTotalPages());
 
@@ -290,5 +293,46 @@ public class PropertyControllerTest {
                 .andReturn();
     }
 
+    @Test
+    @WithMockUser(username = "John", authorities = {"ROLE_ADMIN"})
+    public void getAllSubmission_withDefaultSizeAndPage_responseWithStatusOk() throws Exception {
 
+        MvcResult result = mockMvc.perform(get("/api/v1/properties/submissions"))
+                .andExpect(status().isOk())
+                .andReturn();
+        PageResponseDto<?> response = TestUtil.asPage(result.getResponse().getContentAsString(), new TypeReference<PageResponseDto<SubmissionDto>>() {
+        });
+
+        assertEquals(2, response.getTotalElements());
+        assertEquals(2, response.getNumberOfElements());
+        assertEquals(1, response.getTotalPages());
+    }
+
+    @Test
+    @WithMockUser(username = "John", authorities = {"ROLE_ADMIN"})
+    public void getSubmission_withValidId_responseWithStatusOk() throws Exception {
+        UUID id = UUID.fromString("e02e9631-65cf-4c50-aba2-b96fd72c3266");
+
+        MvcResult result = mockMvc.perform(get("/api/v1/properties/submissions/{id}", id))
+                .andExpect(status().isOk())
+                .andReturn();
+        SubmissionDto response = (SubmissionDto) TestUtil.asObject(result.getResponse().getContentAsString(), SubmissionDto.class);
+
+        assertEquals(id.toString(), response.getId().toString());
+
+    }
+
+    @Test
+    @WithMockUser(username = "John", authorities = {"ROLE_ADMIN"})
+    public void getSubmission_withInvalidId_responseWithStatusOk() throws Exception {
+        UUID invalidId = UUID.fromString("e02e9631-65cf-4c50-aba2-b9");
+
+        MvcResult result = mockMvc.perform(get("/api/v1/properties/submissions/{id}", invalidId))
+                .andExpect(status().isNotFound())
+                .andReturn();
+
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
+        assertEquals("Not found", response.getMessage());
+
+    }
 }
