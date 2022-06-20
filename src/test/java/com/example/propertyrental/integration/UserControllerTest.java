@@ -205,9 +205,9 @@ public class UserControllerTest {
                         .content(TestUtil.asJsonString(requestDto)))
                 .andExpect(status().isOk())
                 .andReturn();
-//        MessageResponseDto response = (MessageResponseDto) TestUtil.asObject(result.getResponse().getContentAsString(), MessageResponseDto.class);
-//        assertEquals("You have successfully change password", response.message());
-        System.out.println(result.getResponse().getContentAsString());
+        MessageResponseDto response = (MessageResponseDto) TestUtil.asObject(result.getResponse().getContentAsString(), MessageResponseDto.class);
+        assertEquals("You have successfully change password", response.message());
+
     }
 
     @Test
