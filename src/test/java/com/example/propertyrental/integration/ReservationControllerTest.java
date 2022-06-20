@@ -3,6 +3,7 @@ package com.example.propertyrental.integration;
 import com.example.propertyrental.dto.PageResponseDto;
 import com.example.propertyrental.dto.PropertyResponseDto;
 import com.example.propertyrental.dto.ReservationDto;
+import com.example.propertyrental.dto.ReservationResponseDto;
 import com.example.propertyrental.exception.ApiError;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,12 +54,36 @@ public class ReservationControllerTest {
                 .andExpect(status().isOk())
                 .andReturn();
 
-        PageResponseDto<?> response = TestUtil.asPage(result.getResponse().getContentAsString(), new TypeReference<PageResponseDto<PropertyResponseDto>>() {
+        PageResponseDto<?> response = TestUtil.asPage(result.getResponse().getContentAsString(), new TypeReference<PageResponseDto<ReservationResponseDto>>() {
         });
 
-        assertEquals(0, response.getTotalElements());
-        assertEquals(0, response.getNumberOfElements());
-        assertEquals(0, response.getTotalPages());
+        assertEquals(2, response.getTotalElements());
+        assertEquals(2, response.getNumberOfElements());
+        assertEquals(1, response.getTotalPages());
+
+    }
+
+    @Test
+    @WithMockUser(username = "John", authorities = {"ROLE_ADMIN"})
+    public void getReservation_withRoleAdmin_validId_statusOK() throws Exception {
+        UUID id = UUID.fromString("461aa172-b57d-4b1f-ba85-9d10300f6b3f");
+
+        MvcResult result = mockMvc.perform(get("/api/v1/reservations/{id}", id))
+                .andExpect(status().isOk())
+                .andReturn();
+
+    }
+
+    @Test
+    @WithMockUser(username = "John", authorities = {"ROLE_ADMIN"})
+    public void getReservation_withRoleAdmin_InvalidId_statusOK() throws Exception {
+        UUID invalidId = UUID.fromString("461aa172-b57d-4b1f-ba85-9");
+
+        MvcResult result = mockMvc.perform(get("/api/v1/reservations/{id}", invalidId))
+                .andExpect(status().isNotFound())
+                .andReturn();
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
+        assertEquals("Not found", response.getMessage());
 
     }
 

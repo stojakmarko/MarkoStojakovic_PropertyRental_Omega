@@ -8,13 +8,15 @@ spring:
     init:
       mode: always
       schema-locations: classpath:data-test.sql
+  config:
+    import: optional:secrets.yml
 
   jpa:
     hibernate:
-        ddl-auto: create
+      ddl-auto: create
     properties:
       hibernate:
-        dialect:  org.hibernate.dialect.H2Dialect
+        dialect: org.hibernate.dialect.H2Dialect
         format_sql: true
     defer-datasource-initialization: true
 
@@ -23,8 +25,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: testtspring
-    password: 
+    username:
+    password:
     properties:
       mail:
         smtp:

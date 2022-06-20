@@ -1,8 +1,6 @@
 package com.example.propertyrental.integration;
 
-import com.example.propertyrental.dto.AuthenticationRequestDto;
-import com.example.propertyrental.dto.UserDto;
-import com.example.propertyrental.dto.UserRegistrationRequestDto;
+import com.example.propertyrental.dto.*;
 import com.example.propertyrental.exception.ApiError;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -164,6 +162,85 @@ public class UserControllerTest {
         mockMvc.perform(get("/api/v1/users"))
                 .andExpect(status().isOk())
                 .andReturn();
+    }
+
+
+    @Test
+    public void forgotPassword_withValidUsername_statusOK() throws Exception {
+        ForgotPasswordDto requestDto = ForgotPasswordDto.builder()
+                .username("markoooooo12222")
+                .build();
+        MvcResult result = mockMvc.perform(post("/api/v1/users/forgotPassword")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtil.asJsonString(requestDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+
+        MessageResponseDto response = (MessageResponseDto) TestUtil.asObject(result.getResponse().getContentAsString(), MessageResponseDto.class);
+        assertEquals("You have received  an email!", response.message());
+
+
+    }
+
+    @Test
+    public void forgotPassword_withInvalidUsername_statusUnauthorized() throws Exception {
+        ForgotPasswordDto requestDto = ForgotPasswordDto.builder()
+                .username("markoooooo")
+                .build();
+        mockMvc.perform(post("/api/v1/users/forgotPassword")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtil.asJsonString(requestDto)))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    @WithMockUser(username = "markoooooo12222", authorities = {"ROLE_CLIENT"})
+    public void changePassword_withValidPasswordToken_statusOk() throws Exception {
+        ChangePasswordDto requestDto = ChangePasswordDto.builder()
+                .newPassword("testpass")
+                .verifyPassword("testpass")
+                .build();
+        MvcResult result = mockMvc.perform(post("/api/v1/users/changePassword?token=test-test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtil.asJsonString(requestDto)))
+                .andExpect(status().isOk())
+                .andReturn();
+        MessageResponseDto response = (MessageResponseDto) TestUtil.asObject(result.getResponse().getContentAsString(), MessageResponseDto.class);
+        assertEquals("You have successfully change password", response.message());
+
+    }
+
+    @Test
+    public void changePassword_withInvalidPasswordToken_statusOk() throws Exception {
+        ChangePasswordDto requestDto = ChangePasswordDto.builder()
+                .newPassword("testpass")
+                .verifyPassword("testpass")
+                .build();
+        mockMvc.perform(post("/api/v1/users/changePassword?token=testInvalid")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtil.asJsonString(requestDto)))
+                .andExpect(status().isUnauthorized())
+                .andReturn();
+
+    }
+
+    @Test
+    public void changePassword_withValidPasswordToken_notVerifyPassword_statusBadRequest() throws Exception {
+        ChangePasswordDto requestDto = ChangePasswordDto.builder()
+                .newPassword("testpass")
+                .verifyPassword("test")
+                .build();
+        MvcResult result = mockMvc.perform(post("/api/v1/users/changePassword?token=test-test")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(TestUtil.asJsonString(requestDto)))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+
+        ApiError response = (ApiError) TestUtil.asObject(result.getResponse().getContentAsString(), ApiError.class);
+
+        assertEquals("Validation error", response.getMessage());
+        assertEquals("Passwords do not match!", response.getSubErrors().get(0).getMessage());
+
     }
 
 
