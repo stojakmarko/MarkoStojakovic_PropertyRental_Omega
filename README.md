@@ -17,7 +17,7 @@ To have email service in app:
 
 ```
     mvn clean package
-    java -jar targe/propertyrental-0.0.1-SNAPSHOT.jar 
+    java -jar target/propertyrental-0.0.1-SNAPSHOT.jar 
 ```
 
 2. **Maven**
